@@ -1,5 +1,3 @@
-package Tower;
-
 public class TurretBase {
     protected int damage;
     protected int range;
