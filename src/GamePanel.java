@@ -1,4 +1,7 @@
-import Map.*;
+import Map.MapLoader;
+import Map.RGBConverter;
+import Map.TileMapper;
+import Map.Tile;
 
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -21,17 +24,16 @@ public class GamePanel extends JPanel {
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap("src/Map/Test.png");
         int[][] map = mapLoader.getMapData();
+        Tile[][] tiles = new Tile[mapLoader.getWidth()][mapLoader.getHeight()];
+        for (int x = 0; x < mapLoader.getWidth(); x++) {
+            for (int y = 0; y < mapLoader.getHeight(); y++) {
+                tiles[x][y] = new Tile(x, y, map);
+            }
+        }
 
         for (int x = 0; x < mapLoader.getWidth(); x++) {
             for (int y = 0; y < mapLoader.getHeight(); y++) {
-                int rgb = map[x][y];
-                BufferedImage tile = null;
-                try {
-                    tile = Tiles.GetTile(RGBConverter.rgbIntToArray(rgb));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                g.drawImage(tile, x*40, y*40, null);
+                tiles[x][y].draw(g);
             }
         }
     }
