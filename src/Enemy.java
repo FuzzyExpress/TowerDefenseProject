@@ -26,5 +26,12 @@ public class Enemy {
         return health > 0;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
     // Getters and setters omitted for brevity...
 }
