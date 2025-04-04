@@ -1,13 +1,21 @@
-public class TurretBase {
-    protected int turretOriginX;
-    protected int turretOriginY;
-    protected int damage;
-    protected int range;
-    protected int x, y;       // Tower position
-    protected int fireRate;   // Attack interval (in milliseconds)
-    protected Enemy target;
+package Turret;
 
-    public TurretBase(int damage, int range, int x, int y, int fireRate) {
+import java.util.List;
+
+// Make sure to import the Enemy class according to your project structure
+import Enemy;
+
+public abstract class TurretBase {
+    protected String name;    // Turret name
+    protected int cost;       // Cost to build or purchase the turret
+    protected int damage;     // Damage dealt per attack
+    protected int range;      // Attack range (measured in pixels or grid units)
+    protected int x, y;       // Turret's coordinates on the map
+    protected int fireRate;   // Attack interval in milliseconds
+
+    public TurretBase(String name, int cost, int damage, int range, int x, int y, int fireRate) {
+        this.name = name;
+        this.cost = cost;
         this.damage = damage;
         this.range = range;
         this.x = x;
@@ -15,28 +23,33 @@ public class TurretBase {
         this.fireRate = fireRate;
     }
 
-    // Check if an enemy is within range and perform an attack
-    public void attack(Enemy enemy) {
-        // Implement logic to verify whether the enemy is near (x, y)
-        enemy.takeDamage(damage);
+    /**
+     * Attack a single enemy. Specific logic is implemented by subclasses.
+     */
+    public abstract void attack(Enemy enemy);
+
+    /**
+     * Optionally, provide a method to attack multiple enemies (e.g., area damage).
+     * The default implementation is empty; subclasses like HeavyTurret can override this.
+     */
+    public void attackEnemies(List<Enemy> enemies) {
+        // Implement area damage logic in subclasses if needed
     }
 
-    public Enemy getTarget(Enemy enemy) {
-
-
-        return target;
+    /**
+     * Check if the target enemy is within range.
+     * Here we assume that "range" is measured in pixels or grid units.
+     */
+    protected boolean isInRange(Enemy enemy) {
+        double dx = enemy.getX() - x;
+        double dy = enemy.getY() - y;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        return distance <= range;
     }
 
-    public int getTurretOriginX() {
-        return turretOriginX;
-    }
-
-    public int getTurretOriginY() {
-        return turretOriginY;
-    }
-
-    public int getFireRate() {
-        return fireRate;
+    // Getters and setters (if needed)
+    public int getCost() {
+        return cost;
     }
 
     public int getDamage() {
@@ -47,19 +60,11 @@ public class TurretBase {
         return range;
     }
 
-    public int getX() {
-        return x;
+    public int getFireRate() {
+        return fireRate;
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setTurretOriginX(int x) {
-        this.turretOriginX = (x * 40) - 20;
-    }
-
-    public void setTurretOriginY(int y) {
-        this.turretOriginY = (y * 40) - 20;
+    public String getName() {
+        return name;
     }
 }
