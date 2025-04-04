@@ -1,0 +1,52 @@
+In your game manager or panel, you can create instances of these turrets and store them in a list for unified management and rendering. UwU
+
+For example(Map/TurretManager.java):
+
+package Map;
+
+import Turret.BasicTurret;
+import Turret.RapidFireTurret;
+import Turret.HeavyTurret;
+import Turret.SniperTurret;
+import Turret.TurretBase;
+import Entity.Enemy;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TurretManager {
+    private List<TurretBase> turrets;
+    
+    public TurretManager() {
+        turrets = new ArrayList<>();
+        // Create turret instances at specific map coordinates.
+        turrets.add(new BasicTurret(100, 200));
+        turrets.add(new RapidFireTurret(150, 200));
+        turrets.add(new HeavyTurret(200, 200));
+        turrets.add(new SniperTurret(250, 200));
+    }
+    
+    /**
+     * Simulate all turrets attacking the same enemy.
+     */
+    public void simulateTurretAttack(Enemy enemy) {
+        for (TurretBase turret : turrets) {
+            turret.attack(enemy);
+        }
+    }
+    
+    public List<TurretBase> getTurrets() {
+        return turrets;
+    }
+    
+    // A simple main method for testing turret attacks.
+    public static void main(String[] args) {
+        // Create an enemy at position (50, 50) with 100 health.
+        Enemy enemy = new Enemy(100, 1.0f, 50, 50);
+        TurretManager manager = new TurretManager();
+        
+        // Simulate an attack from all turrets.
+        manager.simulateTurretAttack(enemy);
+        
+        System.out.println("Enemy health after attack: " + enemy.isAlive());
+    }
+}

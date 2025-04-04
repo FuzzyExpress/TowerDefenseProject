@@ -1,3 +1,5 @@
+package Entity;
+
 public class Enemy {
     private int health;
     private float speed;
@@ -13,7 +15,6 @@ public class Enemy {
     // Update the enemy's position (move along the path)
     public void update() {
         // Implement logic for moving along the Path
-        // For example, update x and y based on speed
     }
 
     // Apply damage to the enemy
@@ -33,5 +34,6 @@ public class Enemy {
     public int getY() {
         return y;
     }
-    // Getters and setters omitted for brevity...
+    
+    // (Optional) Add any additional getters/setters as needed
 }

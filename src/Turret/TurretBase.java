@@ -1,15 +1,13 @@
 package Turret;
 
+import Entity.Enemy;
 import java.util.List;
-
-// Make sure to import the Enemy class according to your project structure
-import Enemy;
 
 public abstract class TurretBase {
     protected String name;    // Turret name
-    protected int cost;       // Cost to build or purchase the turret
-    protected int damage;     // Damage dealt per attack
-    protected int range;      // Attack range (measured in pixels or grid units)
+    protected int cost;       // Cost to build/purchase the turret
+    protected int damage;     // Damage per attack
+    protected int range;      // Attack range (pixels or grid units)
     protected int x, y;       // Turret's coordinates on the map
     protected int fireRate;   // Attack interval in milliseconds
 
@@ -24,21 +22,20 @@ public abstract class TurretBase {
     }
 
     /**
-     * Attack a single enemy. Specific logic is implemented by subclasses.
+     * Attack a single enemy. Subclasses implement the specific logic.
      */
     public abstract void attack(Enemy enemy);
 
     /**
-     * Optionally, provide a method to attack multiple enemies (e.g., area damage).
-     * The default implementation is empty; subclasses like HeavyTurret can override this.
+     * Optionally, a method to attack multiple enemies (e.g., area damage).
+     * Default implementation does nothing.
      */
     public void attackEnemies(List<Enemy> enemies) {
-        // Implement area damage logic in subclasses if needed
+        // Override in subclasses if needed
     }
 
     /**
      * Check if the target enemy is within range.
-     * Here we assume that "range" is measured in pixels or grid units.
      */
     protected boolean isInRange(Enemy enemy) {
         double dx = enemy.getX() - x;
@@ -47,7 +44,11 @@ public abstract class TurretBase {
         return distance <= range;
     }
 
-    // Getters and setters (if needed)
+    // Getters
+    public String getName() {
+        return name;
+    }
+
     public int getCost() {
         return cost;
     }
@@ -62,9 +63,5 @@ public abstract class TurretBase {
 
     public int getFireRate() {
         return fireRate;
-    }
-
-    public String getName() {
-        return name;
     }
 }

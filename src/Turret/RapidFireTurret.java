@@ -1,20 +1,10 @@
 package Turret;
 
-/**
-     * Cost: 200
-     * Damage: 5
-     * Range: 5
-     * Attack Interval: 4 attacks per second (approximately 250 milliseconds)
-     */
-
-
-import Enemy;
-import java.util.List;
+import Entity.Enemy;
 
 public class RapidFireTurret extends TurretBase {
-
     public RapidFireTurret(int x, int y) {
-        // fireRate = 250 milliseconds, corresponding to 4 attacks per second
+        // fireRate = 250 milliseconds
         super("Rapid-Fire Turret", 200, 5, 5, x, y, 250);
     }
 
@@ -22,6 +12,7 @@ public class RapidFireTurret extends TurretBase {
     public void attack(Enemy enemy) {
         if (isInRange(enemy)) {
             enemy.takeDamage(damage);
+            System.out.println(getName() + " attacked enemy for " + damage + " damage.");
         }
     }
 }
