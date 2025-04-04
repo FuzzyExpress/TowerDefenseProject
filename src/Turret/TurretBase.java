@@ -27,11 +27,11 @@ public abstract class TurretBase {
     public abstract void attack(Enemy enemy);
 
     /**
-     * Optionally, a method to attack multiple enemies (e.g., area damage).
+     * Optionally, attack multiple enemies (e.g., area damage).
      * Default implementation does nothing.
      */
     public void attackEnemies(List<Enemy> enemies) {
-        // Override in subclasses if needed
+        // Override in subclasses if needed.
     }
 
     /**

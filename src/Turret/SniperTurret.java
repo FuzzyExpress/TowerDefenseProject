@@ -4,7 +4,7 @@ import Entity.Enemy;
 
 public class SniperTurret extends TurretBase {
     public SniperTurret(int x, int y) {
-        // fireRate = 5000 milliseconds
+        // cost=300, damage=100, range=10, attack interval=5000ms (0.2 attacks/sec)
         super("Sniper Turret", 300, 100, 10, x, y, 5000);
     }
 

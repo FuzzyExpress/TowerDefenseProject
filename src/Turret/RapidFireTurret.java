@@ -4,7 +4,7 @@ import Entity.Enemy;
 
 public class RapidFireTurret extends TurretBase {
     public RapidFireTurret(int x, int y) {
-        // fireRate = 250 milliseconds
+        // cost=200, damage=5, range=5, attack interval=250ms (4 attacks/sec)
         super("Rapid-Fire Turret", 200, 5, 5, x, y, 250);
     }
 

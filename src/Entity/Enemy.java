@@ -14,7 +14,7 @@ public class Enemy {
 
     // Update the enemy's position (move along the path)
     public void update() {
-        // Implement logic for moving along the Path
+        // Implement logic for moving along the path
     }
 
     // Apply damage to the enemy
@@ -34,6 +34,4 @@ public class Enemy {
     public int getY() {
         return y;
     }
-    
-    // (Optional) Add any additional getters/setters as needed
 }
