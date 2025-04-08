@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import Entity.Enemy.Enemy;
+
 public class GameManager {
     private List<Enemy> enemies;
     private int baseHealth;

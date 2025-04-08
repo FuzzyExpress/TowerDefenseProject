@@ -1,0 +1,35 @@
+If you’d like a quick test, you can create a small class in your Map folder to instantiate some turrets and an enemy. \UwU/
+
+For example:
+
+package Map;
+
+import Turret.BasicTurret;
+import Turret.RapidFireTurret;
+import Turret.HeavyTurret;
+import Turret.SniperTurret;
+import Turret.TurretBase;
+import Entity.Enemy;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TurretTest {
+    public static void main(String[] args) {
+        // Create a test enemy
+        Enemy enemy = new Enemy(100, 1.0f, 50, 50);
+        
+        // Create a list of turrets
+        List<TurretBase> turrets = new ArrayList<>();
+        turrets.add(new BasicTurret(40, 50));       // x=40, y=50
+        turrets.add(new RapidFireTurret(45, 50));   // x=45, y=50
+        turrets.add(new HeavyTurret(55, 50));       // x=55, y=50
+        turrets.add(new SniperTurret(100, 50));     // x=100, y=50
+
+        // Have each turret attack the enemy
+        for (TurretBase turret : turrets) {
+            turret.attack(enemy);
+        }
+        
+        System.out.println("Enemy is still alive? " + enemy.isAlive());
+    }
+}

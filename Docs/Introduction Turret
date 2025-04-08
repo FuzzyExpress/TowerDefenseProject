@@ -1,0 +1,59 @@
+1. Basic Turret
+
+Cost: 100 gold
+
+Damage: 10
+
+Attack Speed: 1.0 attacks/second
+
+DPS: 10
+
+Range: 5 tiles
+
+Description: A low-cost, entry-level turret with standard single-target attacks.
+
+
+2. Rapid-Fire Turret
+
+Cost: 200 gold
+
+Damage: 5
+
+Attack Speed: 4.0 attacks/second
+
+DPS: 20
+
+Range: 5 tiles
+
+Description: Fires rapidly with low per-shot damage. Visually intense and effective for clearing out swarms of weaker enemies.
+
+
+3. Heavy Turret
+
+Cost: 300 gold
+
+Damage: 40
+
+Attack Speed: 0.33 attacks/second (once every 3 seconds)
+
+DPS: 13.3 base + ~10 DoT = ~23.3 total DPS
+
+Range: 5 tiles
+
+Description: Deals area-of-effect damage and leaves a burning zone on the ground for 3 seconds, dealing 10 damage per second (30 total). Excellent for handling grouped enemies.
+
+
+4. Sniper Turret
+
+Cost: 300 gold
+
+Damage: 100
+
+Attack Speed: 0.2 attacks/second (once every 5 seconds)
+
+DPS: 20
+
+Range: 10 tiles
+
+Description: Very long range and powerful single-shot damage. Best used against high-health targets like elites or bosses.
+
