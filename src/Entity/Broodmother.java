@@ -1,8 +1,6 @@
 package Entity;
 
 public class Broodmother extends Enemy {
-    private int health;
-    private float speed;
     // Flag to ensure the spawn is only triggered once.
     private boolean spawnTriggered = false;
     // Record the time of death.
