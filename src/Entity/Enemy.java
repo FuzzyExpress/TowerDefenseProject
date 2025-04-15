@@ -9,8 +9,8 @@ import javax.imageio.ImageIO;
 import java.util.List;
 
 public abstract class Enemy {
-    //private int health;
-    //private float speed;
+    private int health;
+    private float speed;
     private int x, y;// Screen pixel coordinates
     private float exactX, exactY;
     private List<Point> path;
@@ -46,10 +46,6 @@ public abstract class Enemy {
         this.x = (int) exactX;
         this.y = (int) exactY;
     }
-    
-    public int getHealth() {
-        return health;
-    }
 
     public void update() {
         if (path == null || currentIndex >= path.size() - 1) return;
@@ -75,11 +71,11 @@ public abstract class Enemy {
         this.y = (int) exactY;
     }
 
-    public void takeDamage(int health, int damage) {
+    public void takeDamage(int damage) {
         health -= damage;
     }
 
-    public boolean isAlive(int health) {
+    public boolean isAlive() {
         return health > 0;
     }
 
@@ -95,9 +91,13 @@ public abstract class Enemy {
         return y;
     }
 
-    abstract public int getHealth();
+    public int getHealth() {
+        return health;
+    }
 
-    abstract public float getSpeed();
+    public float getSpeed() {
+        return speed;
+    }
 
     public void draw(Graphics g) {
         if (image != null) {

@@ -12,21 +12,11 @@ public class Broodmother extends Enemy {
     
     // Override takeDamage to trigger onDeath() when health reaches 0.
     @Override
-    public void takeDamage(int health, int damage) {
-        super.takeDamage(health, damage);
-        if (!isAlive(health) && !spawnTriggered) {
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+        if (!isAlive() && !spawnTriggered) {
             onDeath();
         }
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public float getSpeed() {
-        return speed;
     }
 
     // This method is called when the Broodmother dies.
@@ -39,8 +29,8 @@ public class Broodmother extends Enemy {
     
     // Update method checks if the delay has passed to spawn new bugs.
     @Override
-    public void update(float speed) {
-        super.update(speed);
+    public void update() {
+        super.update();
         // If onDeath has been triggered and 5 seconds have elapsed.
         if (spawnTriggered && (System.currentTimeMillis() - deathTime) >= 5000) {
             spawnBasicBugs();

@@ -6,9 +6,9 @@ public class Beetle extends Enemy {
     }
     
     @Override
-    public void takeDamage(int health, int damage) {
-        super.takeDamage(health, damage);
-        if (!isAlive(health)) {
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+        if (!isAlive()) {
             onDeath();
         }
     }
