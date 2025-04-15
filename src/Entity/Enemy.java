@@ -2,30 +2,31 @@ package Entity;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Enemy {
-    private int health;
-    private float speed;
-    private int x, y;  // Screen pixel coordinates
+public abstract class Enemy {
+    //private int health;
+    //private float speed;
+    private int x, y;// Screen pixel coordinates
     private float exactX, exactY;
     private List<Point> path;
     private int currentIndex = 0;
     private static final int TILE_SIZE = 40;
 
-    public Enemy(int health, float speed, List<Point> path) {
-        this.health = health;
-        this.speed = speed;
-        this.path = path;
+    public Enemy(int startX, int startY) {
+        this.path = new ArrayList<Point>();
 
         Point start = path.get(0);
         this.exactX = start.x * TILE_SIZE;
         this.exactY = start.y * TILE_SIZE;
         this.x = (int) exactX;
         this.y = (int) exactY;
+        startX = x;
+        startY = y;
     }
 
-    public void update() {
+    public void update(float speed) {
         if (currentIndex >= path.size()) return;
 
         Point target = path.get(currentIndex);
@@ -49,11 +50,11 @@ public class Enemy {
         this.y = (int) exactY;
     }
 
-    public void takeDamage(int damage) {
+    public void takeDamage(int health, int damage) {
         health -= damage;
     }
 
-    public boolean isAlive() {
+    public boolean isAlive(int health) {
         return health > 0;
     }
 
@@ -68,6 +69,10 @@ public class Enemy {
     public int getY() {
         return y;
     }
+
+    abstract public int getHealth();
+
+    abstract public float getSpeed();
 
     public void draw(Graphics g) {
         g.setColor(java.awt.Color.RED);

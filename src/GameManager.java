@@ -1,37 +1,40 @@
-import Entity.Enemy;  // Correct import
 import java.util.ArrayList;
 import java.util.List;
 
+import Entity.Enemy;
+
 public class GameManager {
-    private final List<Enemy> enemies;
-    private final int baseHealth;
-    private final int waveCount;
-    // You can also include other fields such as the path for enemies, etc.
+    private List<Enemy> enemies;
+    private int baseHealth;
+    private int waveCount;
+    private Path path; // Level path
 
     public GameManager() {
         enemies = new ArrayList<>();
-        baseHealth = 100;
+        baseHealth = 100; // Initial base health
         waveCount = 0;
+        path = new Path(); // Create a fixed path
+    }
+
+    // Start the game and initialize the game loop
+    public void startGame() {
+        // Initialize enemies, waves, and other state variables
+        GameLoop loop = new GameLoop(this);
+        loop.start();
+    }
+
+    // Update the game state: enemy movement, collision detection, wave management, etc.
+    public void update() {
+        for (Enemy enemy : enemies) {
+            enemy.update(enemy.getSpeed());
+            // Add logic here to check if an enemy reaches the base and reduce base health
+        }
+        // Add logic to update wave count and spawn new enemies as needed
     }
 
     public void addEnemy(Enemy enemy) {
         enemies.add(enemy);
     }
 
-    public void update() {
-        for (Enemy enemy : enemies) {
-            enemy.update();
-            // Add any collision or game state logic here.
-        }
-    }
-    
-    public static void main(String[] args) {
-        GameManager gm = new GameManager();
-        // Create an enemy with 100 health, speed 1.0, starting at position (0, 0)
-        Enemy enemy1 = new Enemy(100, 1.0f, 0, 0);
-        gm.addEnemy(enemy1);
-        
-        gm.update(); // update game state
-        System.out.println("GameManager updated. Enemy at (" + enemy1.getX() + ", " + enemy1.getY() + ").");
-    }
+    // Getters and setters omitted for brevity...
 }
