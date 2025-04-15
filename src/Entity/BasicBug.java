@@ -1,7 +1,12 @@
 package Entity;
 
+import java.awt.image.BufferedImage;
+
 public class BasicBug extends Enemy {
-    public BasicBug(int startX, int startY) {
-        super(100, 1.0f, startX, startY);
+    private static final int DEFAULT_HEALTH = 100;
+    private static final float DEFAULT_SPEED = 2.0f;
+    
+    public BasicBug(int x, int y) {
+        super(DEFAULT_HEALTH, DEFAULT_SPEED, x, y);
     }
 }

@@ -2,7 +2,7 @@ package Entity;
 
 public class Beetle extends Enemy {
     public Beetle(int startX, int startY) {
-        super(400, 0.3f, startX, startY);
+        super(400, 0.3f, startX, startY, "art/Bugs/Beetle.png");
     }
     
     @Override

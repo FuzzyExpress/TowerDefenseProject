@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="40"
+   height="40"
+   viewBox="0 0 10.583333 10.583333"
+   version="1.1"
+   id="svg1"
+   inkscape:export-batch-path="/home/evans/Documents/Java/TowerDefenseProject/art/Bugs"
+   inkscape:export-batch-name="/"
+   inkscape:version="1.4-dev (1:1.4.0-dev+202403210151+2fe0648968)"
+   sodipodi:docname="TestBugs.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showguides="false"
+     inkscape:zoom="7.9396867"
+     inkscape:cx="20.214903"
+     inkscape:cy="26.512381"
+     inkscape:window-width="1920"
+     inkscape:window-height="1012"
+     inkscape:window-x="0"
+     inkscape:window-y="40"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g6" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Bug"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <ellipse
+       style="fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:7.50017;stroke-linecap:square"
+       id="path1"
+       cx="5.2916665"
+       cy="5.2916665"
+       rx="2.3034112"
+       ry="2.7746859" />
+    <ellipse
+       style="fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:7.50018;stroke-linecap:square"
+       id="path1-5"
+       cx="5.2916665"
+       cy="2.772651"
+       rx="1.0319148"
+       ry="1.2430431" />
+    <rect
+       style="fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:7.50014;stroke-linecap:square;opacity:0"
+       id="rect6"
+       width="10.583333"
+       height="10.583333"
+       x="0"
+       y="0"
+       inkscape:label="box" />
+  </g>
+  <g
+     inkscape:label="Broodmother"
+     inkscape:groupmode="layer"
+     id="g2"
+     style="display:inline">
+    <ellipse
+       style="fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:7.50016;stroke-linecap:square"
+       id="ellipse1"
+       cx="5.2916665"
+       cy="5.2916665"
+       rx="2.8453772"
+       ry="3.4275372" />
+    <ellipse
+       style="fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:7.50018;stroke-linecap:square"
+       id="ellipse2"
+       cx="5.2916665"
+       cy="1.8641293"
+       rx="1.0319148"
+       ry="1.2430431" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect6"
+       id="use6"
+       style="display:inline"
+       inkscape:label="box" />
+  </g>
+  <g
+     inkscape:label="Beetle"
+     inkscape:groupmode="layer"
+     id="g4"
+     style="display:inline">
+    <ellipse
+       style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:7.50016;stroke-linecap:square"
+       id="ellipse3"
+       cx="5.2916665"
+       cy="5.2916665"
+       rx="2.2562838"
+       ry="2.7179163" />
+    <ellipse
+       style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:7.50018;stroke-linecap:square"
+       id="ellipse4"
+       cx="5.2916665"
+       cy="2.4767864"
+       rx="0.86696869"
+       ry="1.0443492" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect6"
+       id="use7"
+       style="display:inline"
+       inkscape:label="box" />
+  </g>
+  <g
+     inkscape:label="Fast Bug"
+     inkscape:groupmode="layer"
+     id="g6">
+    <ellipse
+       style="fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:7.50017;stroke-linecap:square"
+       id="ellipse5"
+       cx="5.2916665"
+       cy="5.2916665"
+       rx="1.4698099"
+       ry="1.7705309" />
+    <ellipse
+       style="fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:7.50016;stroke-linecap:square"
+       id="ellipse6"
+       cx="5.2916665"
+       cy="3.5211356"
+       rx="0.45617753"
+       ry="0.54951078" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect6"
+       id="use8"
+       style="display:inline"
+       inkscape:label="box" />
+  </g>
+</svg>

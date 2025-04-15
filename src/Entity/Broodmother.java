@@ -7,7 +7,7 @@ public class Broodmother extends Enemy {
     private long deathTime;
 
     public Broodmother(int startX, int startY) {
-        super(250, 0.5f, startX, startY);
+        super(250, 0.5f, startX, startY, "art/Bugs/Broodmother.png");
     }
     
     // Override takeDamage to trigger onDeath() when health reaches 0.
