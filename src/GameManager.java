@@ -33,6 +33,12 @@ public class GameManager {
     }
 
     public void addEnemy(Enemy enemy) {
+        if (path != null && !path.isEmpty()) {
+            // Set enemy starting position to the first point in the path
+            Point start = path.get(0);
+            enemy.setPosition(start.x * 40, start.y * 40); // Multiply by tile size
+            enemy.setPath(path);
+        }
         enemies.add(enemy);
     }
 

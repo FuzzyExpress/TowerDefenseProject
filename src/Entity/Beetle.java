@@ -1,16 +1,14 @@
 package Entity;
 
 public class Beetle extends Enemy {
-    public Beetle(int health, float speed, int startX, int startY) {
-        super(health, speed, startX, startY);
-        health = 400;
-        speed = 0.3f;
+    public Beetle(int startX, int startY) {
+        super(400, 0.3f, startX, startY, "art/Bugs/Beetle.png");
     }
     
     @Override
-    public void takeDamage(int damage) {
-        super.takeDamage(damage);
-        if (!isAlive()) {
+    public void takeDamage(int health, int damage) {
+        super.takeDamage(health, damage);
+        if (!isAlive(health)) {
             onDeath();
         }
     }
