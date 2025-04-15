@@ -1,36 +1,24 @@
 package Entity;
 
 public class Broodmother extends Enemy {
-    private int health;
-    private float speed;
     // Flag to ensure the spawn is only triggered once.
     private boolean spawnTriggered = false;
     // Record the time of death.
     private long deathTime;
 
-    public Broodmother(int startX, int startY) {
-        super(startX, startY);
-        this.health = 250;
-        this.speed = 0.5f;
+    public Broodmother(int health, float speed, int startX, int startY) {
+        super(health, speed, startX, startY);
+        health = 250;
+        speed = 0.5f;
     }
     
     // Override takeDamage to trigger onDeath() when health reaches 0.
     @Override
-    public void takeDamage(int health, int damage) {
-        super.takeDamage(health, damage);
-        if (!isAlive(health) && !spawnTriggered) {
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+        if (!isAlive() && !spawnTriggered) {
             onDeath();
         }
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public float getSpeed() {
-        return speed;
     }
 
     // This method is called when the Broodmother dies.
@@ -43,8 +31,8 @@ public class Broodmother extends Enemy {
     
     // Update method checks if the delay has passed to spawn new bugs.
     @Override
-    public void update(float speed) {
-        super.update(speed);
+    public void update() {
+        super.update();
         // If onDeath has been triggered and 5 seconds have elapsed.
         if (spawnTriggered && (System.currentTimeMillis() - deathTime) >= 5000) {
             spawnBasicBugs();

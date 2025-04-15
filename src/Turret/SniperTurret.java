@@ -11,7 +11,7 @@ public class SniperTurret extends TurretBase {
     @Override
     public void attack(Enemy enemy) {
         if (isInRange(enemy)) {
-            enemy.takeDamage(enemy.getHealth(), damage);
+            enemy.takeDamage(damage);
             System.out.println(getName() + " sniped enemy for " + damage + " damage.");
         }
     }

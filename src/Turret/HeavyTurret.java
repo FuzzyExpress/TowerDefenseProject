@@ -12,7 +12,7 @@ public class HeavyTurret extends TurretBase {
     @Override
     public void attack(Enemy enemy) {
         if (isInRange(enemy)) {
-            enemy.takeDamage(enemy.getHealth(), damage);
+            enemy.takeDamage(damage);
             System.out.println(getName() + " attacked enemy for " + damage + " damage.");
         }
     }
@@ -22,7 +22,7 @@ public class HeavyTurret extends TurretBase {
         // Example: deal damage to every enemy within range
         for (Enemy enemy : enemies) {
             if (isInRange(enemy)) {
-                enemy.takeDamage(enemy.getHealth(), damage);
+                enemy.takeDamage(damage);
                 System.out.println(getName() + " area-attacked enemy for " + damage + " damage.");
             }
         }

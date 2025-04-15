@@ -11,7 +11,7 @@ public class BasicTurret extends TurretBase {
     @Override
     public void attack(Enemy enemy) {
         if (isInRange(enemy)) {
-            enemy.takeDamage(enemy.getHealth(), damage);
+            enemy.takeDamage(damage);
             System.out.println(getName() + " attacked enemy for " + damage + " damage.");
         }
     }

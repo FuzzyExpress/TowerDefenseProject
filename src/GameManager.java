@@ -26,7 +26,7 @@ public class GameManager {
     // Update the game state: enemy movement, collision detection, wave management, etc.
     public void update() {
         for (Enemy enemy : enemies) {
-            enemy.update(enemy.getSpeed());
+            enemy.update();
             // Add logic here to check if an enemy reaches the base and reduce base health
         }
         // Add logic to update wave count and spawn new enemies as needed
