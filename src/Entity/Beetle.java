@@ -6,13 +6,13 @@ public class Beetle extends Enemy {
     }
     
     @Override
-    public void takeDamage(int damage) {
-        super.takeDamage(damage);
-        if (!isAlive()) {
+    public void takeDamage(int health, int damage) {
+        super.takeDamage(health, damage);
+        if (!isAlive(health)) {
             onDeath();
         }
     }
-    
+
     // Method triggered on death to perform the collision charge.
     public void onDeath() {
         System.out.println("Beetle died. Charging toward the nearest turret to deal collision damage.");
