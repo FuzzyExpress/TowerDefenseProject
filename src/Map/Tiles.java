@@ -10,4 +10,9 @@ public enum Tiles {
     SPAWNER,
     END,
     UNKNOWN,
+    ;
+
+    public boolean isPath() {
+        return this == PATH;
+    }
 }

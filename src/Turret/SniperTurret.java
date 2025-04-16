@@ -1,18 +1,24 @@
 package Turret;
 
 import Entity.Enemy;
+import java.awt.*;
 
 public class SniperTurret extends TurretBase {
     public SniperTurret(int x, int y) {
-        // cost=300, damage=100, range=10, attack interval=5000ms (0.2 attacks/sec)
-        super("Sniper Turret", 300, 100, 10, x, y, 5000);
+        super("Sniper Turret", 300, 200, 10, x, y, 5000);
     }
 
     @Override
     public void attack(Enemy enemy) {
-        if (isInRange(enemy)) {
-            enemy.takeDamage(damage);
-            System.out.println(getName() + " sniped enemy for " + damage + " damage.");
-        }
+        enemy.takeDamage(damage);
+        System.out.println(name + " sniped for " + damage);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        g.setColor(Color.PINK);
+        g.fillRect(x - 10, y - 10, 20, 20);
+        g.setColor(Color.WHITE);
+        g.drawOval(x - range * 40, y - range * 40, range * 80, range * 80);
     }
 }

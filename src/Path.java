@@ -1,18 +1,22 @@
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Path {
-    private List<Point> pathPoints;
+    private List<Point> points;
 
     public Path() {
-        pathPoints = new ArrayList<>();
-        // Example: Define a simple horizontal path
-        pathPoints.add(new Point(0, 300));
-        pathPoints.add(new Point(800, 300));
+        this.points = points;
     }
 
-    public List<Point> getPathPoints() {
-        return pathPoints;
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    public boolean isEmpty() {
+        return points == null || points.isEmpty();
+    }
+
+    public Point get(int index) {
+        return points.get(index);
     }
 }

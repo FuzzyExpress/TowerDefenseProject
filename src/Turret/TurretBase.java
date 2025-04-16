@@ -1,15 +1,18 @@
 package Turret;
 
 import Entity.Enemy;
+import java.awt.*;
 import java.util.List;
 
 public abstract class TurretBase {
-    protected String name;    // Turret name
-    protected int cost;       // Cost to build/purchase the turret
-    protected int damage;     // Damage per attack
-    protected int range;      // Attack range (pixels or grid units)
-    protected int x, y;       // Turret's coordinates on the map
-    protected int fireRate;   // Attack interval in milliseconds
+    protected String name;
+    protected int cost;
+    protected int damage;
+    protected int range;
+    protected int x, y;
+    protected int fireRate;
+    protected long lastFireTime;
+    private boolean hovered = false;
 
     public TurretBase(String name, int cost, int damage, int range, int x, int y, int fireRate) {
         this.name = name;
@@ -19,49 +22,50 @@ public abstract class TurretBase {
         this.x = x;
         this.y = y;
         this.fireRate = fireRate;
+        this.lastFireTime = 0;
     }
 
-    /**
-     * Attack a single enemy. Subclasses implement the specific logic.
-     */
     public abstract void attack(Enemy enemy);
 
-    /**
-     * Optionally, attack multiple enemies (e.g., area damage).
-     * Default implementation does nothing.
-     */
     public void attackEnemies(List<Enemy> enemies) {
-        // Override in subclasses if needed.
+        long now = System.currentTimeMillis();
+        if (now - lastFireTime < fireRate) return;
+
+        for (Enemy enemy : enemies) {
+            if (isInRange(enemy) && enemy.isAlive()) {
+                attack(enemy);
+                lastFireTime = now;
+                break;
+            }
+        }
     }
 
-    /**
-     * Check if the target enemy is within range.
-     */
     protected boolean isInRange(Enemy enemy) {
         double dx = enemy.getX() - x;
         double dy = enemy.getY() - y;
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        return distance <= range;
+        return Math.sqrt(dx * dx + dy * dy) <= range * 40;
+    }
+
+    public void setHovered(boolean hovered) {
+        this.hovered = hovered;
+    }
+
+    public void draw(Graphics g, Color turretColor) {
+        g.setColor(turretColor);
+        g.fillRect(x - 10, y - 10, 20, 20);
+
+        if (hovered) {
+            g.setColor(turretColor);
+            g.drawOval(x - range * 40, y - range * 40, range * 80, range * 80);
+        }
     }
 
     // Getters
-    public String getName() {
-        return name;
-    }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public String getName() { return name; }
+    public int getCost() { return cost; }
+    public int getRange() { return range; }
 
-    public int getCost() {
-        return cost;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public int getFireRate() {
-        return fireRate;
-    }
+    public abstract void draw(Graphics g);
 }

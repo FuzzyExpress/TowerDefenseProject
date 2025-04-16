@@ -17,18 +17,19 @@ public abstract class Enemy {
     private int currentIndex = 0;
     private static final int TILE_SIZE = 40;
     private BufferedImage image;
-
-    public Enemy(int health, float speed, int x, int y) {
+    private String imagePath;
+    public Enemy(int health, float speed, int x, int y, String imagePath) {
         this.health = health;
         this.speed = speed;
         this.exactX = x;
         this.exactY = y;
         this.x = (int) exactX;
         this.y = (int) exactY;
+        this.imagePath = imagePath;
         
         try {
             // Default image if not specified
-            this.image = ImageIO.read(new File("art/enemy/bug.png"));
+            this.image = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Could not load enemy image");

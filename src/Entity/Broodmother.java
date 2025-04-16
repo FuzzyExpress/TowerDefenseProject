@@ -7,7 +7,7 @@ public class Broodmother extends Enemy {
     private long deathTime;
 
     public Broodmother(int startX, int startY) {
-        super(250, 0.5f, startX, startY, "art/Bugs/Broodmother.png");
+        super(400, 0.7f, startX, startY, "art/Bugs/Broodmother.png");
     }
     
     // Override takeDamage to trigger onDeath() when health reaches 0.
@@ -26,7 +26,8 @@ public class Broodmother extends Enemy {
         System.out.println("Broodmother died. Will spawn 3 Basic Bugs after 5 seconds.");
         // In a real game, you might schedule a timer or flag an event here.
     }
-    
+
+
     // Update method checks if the delay has passed to spawn new bugs.
     @Override
     public void update() {

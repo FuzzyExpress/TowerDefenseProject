@@ -1,30 +1,40 @@
 package Turret;
 
 import Entity.Enemy;
+import java.awt.*;
 import java.util.List;
 
 public class HeavyTurret extends TurretBase {
     public HeavyTurret(int x, int y) {
-        // cost=300, damage=40, range=3, attack interval=3333ms (~0.3 attacks/sec)
-        super("Heavy Turret", 300, 40, 3, x, y, 3333);
+        super("Heavy Turret", 300, 50, 3, x, y, 3333);
     }
 
     @Override
     public void attack(Enemy enemy) {
-        if (isInRange(enemy)) {
-            enemy.takeDamage(damage);
-            System.out.println(getName() + " attacked enemy for " + damage + " damage.");
-        }
+        enemy.takeDamage(damage);
+        System.out.println(name + " hit for " + damage);
     }
 
     @Override
     public void attackEnemies(List<Enemy> enemies) {
-        // Example: deal damage to every enemy within range
+        long now = System.currentTimeMillis();
+        if (now - lastFireTime < fireRate) return;
+
         for (Enemy enemy : enemies) {
-            if (isInRange(enemy)) {
+            if (isInRange(enemy) && enemy.isAlive()) {
                 enemy.takeDamage(damage);
-                System.out.println(getName() + " area-attacked enemy for " + damage + " damage.");
             }
         }
+
+        System.out.println(name + " AOE fired");
+        lastFireTime = now;
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        g.setColor(Color.RED);
+        g.fillRect(x - 10, y - 10, 20, 20);
+        g.setColor(Color.PINK);
+        g.drawOval(x - range * 40, y - range * 40, range * 80, range * 80);
     }
 }

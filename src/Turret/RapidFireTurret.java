@@ -1,18 +1,24 @@
 package Turret;
 
 import Entity.Enemy;
+import java.awt.*;
 
 public class RapidFireTurret extends TurretBase {
     public RapidFireTurret(int x, int y) {
-        // cost=200, damage=5, range=5, attack interval=250ms (4 attacks/sec)
-        super("Rapid-Fire Turret", 200, 5, 5, x, y, 250);
+        super("Rapid-Fire Turret", 200, 10, 5, x, y, 250);
     }
 
     @Override
     public void attack(Enemy enemy) {
-        if (isInRange(enemy)) {
-            enemy.takeDamage(damage);
-            System.out.println(getName() + " attacked enemy for " + damage + " damage.");
-        }
+        enemy.takeDamage(damage);
+        System.out.println(name + " rapid-hit for " + damage);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        g.setColor(Color.YELLOW);
+        g.fillRect(x - 10, y - 10, 20, 20);
+        g.setColor(Color.ORANGE);
+        g.drawOval(x - range * 40, y - range * 40, range * 80, range * 80);
     }
 }
