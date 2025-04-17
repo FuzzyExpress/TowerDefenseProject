@@ -1,11 +1,13 @@
 package Turret;
 
 import Entity.Enemy;
+import Utility.GameSettings;
+
 import java.awt.*;
 
 public class RapidFireTurret extends TurretBase {
     public RapidFireTurret(int x, int y) {
-        super("Rapid-Fire Turret", 200, 10, 5, x, y, 250);
+        super("Rapid-Fire Turret", 200, 10, 5, x, y, 250, "ChainTurret");
     }
 
     @Override
@@ -19,6 +21,6 @@ public class RapidFireTurret extends TurretBase {
         g.setColor(Color.YELLOW);
         g.fillRect(x - 10, y - 10, 20, 20);
         g.setColor(Color.ORANGE);
-        g.drawOval(x - range * 40, y - range * 40, range * 80, range * 80);
+        g.drawOval(x - range * GameSettings.getTileSize(), y - range * GameSettings.getTileSize(), range * 2 * GameSettings.getTileSize(), range * 2 * GameSettings.getTileSize());
     }
 }

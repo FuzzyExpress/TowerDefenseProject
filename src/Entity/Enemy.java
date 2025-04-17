@@ -7,19 +7,21 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.List;
+import Utility.GameSettings;
 
 public abstract class Enemy {
     private int health;
+    private int maxHealth;
     private float speed;
     private int x, y;// Screen pixel coordinates
     private float exactX, exactY;
     private List<Point> path;
     private int currentIndex = 0;
-    private static final int TILE_SIZE = 40;
     private BufferedImage image;
     private String imagePath;
     public Enemy(int health, float speed, int x, int y, String imagePath) {
         this.health = health;
+        this.maxHealth = health;  // Store the initial health as max health
         this.speed = speed;
         this.exactX = x;
         this.exactY = y;
@@ -52,8 +54,8 @@ public abstract class Enemy {
         if (path == null || currentIndex >= path.size() - 1) return;
 
         Point target = path.get(currentIndex + 1);
-        float targetX = target.x * TILE_SIZE;
-        float targetY = target.y * TILE_SIZE;
+        float targetX = GameSettings.tileToScreen(target.x);
+        float targetY = GameSettings.tileToScreen(target.y);
 
         float dx = targetX - exactX;
         float dy = targetY - exactY;
@@ -101,17 +103,19 @@ public abstract class Enemy {
     }
 
     public void draw(Graphics g) {
+        int tileSize = GameSettings.getTileSize();
+        
         if (image != null) {
-            g.drawImage(image, x, y, TILE_SIZE, TILE_SIZE, null);
+            g.drawImage(image, x, y, tileSize, tileSize, null);
         } else {
             g.setColor(java.awt.Color.RED);
-            g.fillOval(x, y, TILE_SIZE, TILE_SIZE);
+            g.fillOval(x, y, tileSize, tileSize);
         }
         
         // Draw health bar
         g.setColor(java.awt.Color.RED);
-        g.fillRect(x, y - 10, TILE_SIZE, 5);
+        g.fillRect(x, y - GameSettings.scaled(10), tileSize, GameSettings.scaled(5));
         g.setColor(java.awt.Color.GREEN);
-        g.fillRect(x, y - 10, (int)(TILE_SIZE * (health / 100.0)), 5);
+        g.fillRect(x, y - GameSettings.scaled(10), (int)MapRange.remap(0, maxHealth, 0, tileSize, health), GameSettings.scaled(5));
     }
 }

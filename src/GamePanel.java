@@ -4,6 +4,7 @@ import Map.PathFinder;
 import Map.Tile;
 import Map.TileMapper;
 import Turret.*;
+import Utility.GameSettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,10 +38,10 @@ public class GamePanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                int tileX = e.getX() / 40;
-                int tileY = e.getY() / 40;
-                int px = tileX * 40 + 20;
-                int py = tileY * 40 + 20;
+                int tileX = GameSettings.screenToTile(e.getX());
+                int tileY = GameSettings.screenToTile(e.getY());
+                int px = GameSettings.tileToScreenCentered(tileX);
+                int py = GameSettings.tileToScreenCentered(tileY);
 
                 // Don't allow turret on path tiles
                 if (TileMapper.GetTile(rawMap[tileX][tileY]).isPath()) {
@@ -50,7 +51,8 @@ public class GamePanel extends JPanel {
 
                 // Don't allow stacking turrets
                 for (TurretBase existing : gameManager.getTurrets()) {
-                    if (Math.abs(existing.getX() - px) < 20 && Math.abs(existing.getY() - py) < 20) {
+                    if (Math.abs(existing.getX() - px) < GameSettings.getTileSize()/2 && 
+                        Math.abs(existing.getY() - py) < GameSettings.getTileSize()/2) {
                         return;
                     }
                 }
@@ -77,7 +79,8 @@ public class GamePanel extends JPanel {
                 for (TurretBase turret : gameManager.getTurrets()) {
                     int tx = turret.getX();
                     int ty = turret.getY();
-                    boolean hovered = Math.abs(mx - tx) < 20 && Math.abs(my - ty) < 20;
+                    int hoverDistance = GameSettings.getTileSize()/2;
+                    boolean hovered = Math.abs(mx - tx) < hoverDistance && Math.abs(my - ty) < hoverDistance;
                     turret.setHovered(hovered);
                 }
 
@@ -100,12 +103,18 @@ public class GamePanel extends JPanel {
             }
         }
 
-        if (path != null && !path.isEmpty()) {
-            g.setColor(Color.YELLOW);
-            for (Point p : path) {
-                g.fillOval(p.x * 40 + 15, p.y * 40 + 15, 10, 10);
-            }
-        }
+        // if (path != null && !path.isEmpty()) {
+        //     g.setColor(Color.YELLOW);
+        //     for (Point p : path) {
+        //         int dotSize = GameSettings.scaled(10);
+        //         int dotOffset = GameSettings.scaled(15);
+        //         g.fillOval(
+        //             GameSettings.tileToScreen(p.x) + dotOffset, 
+        //             GameSettings.tileToScreen(p.y) + dotOffset, 
+        //             dotSize, dotSize
+        //         );
+        //     }
+        // }
 
         for (Enemy enemy : gameManager.getEnemies()) {
             enemy.draw(g);
@@ -126,7 +135,7 @@ public class GamePanel extends JPanel {
 
     private void drawHUD(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 250, 50);
+        g.fillRect(0, 0, GameSettings.scaled(250), GameSettings.scaled(50));
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 14));

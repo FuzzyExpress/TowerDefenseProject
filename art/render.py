@@ -38,7 +38,7 @@ def move(x, y):
     bpy.data.objects["Camera"].location[1] = y + .5
 
 def scale(s):
-    size( round(s*40) )
+    size( round(s*60) )
     bpy.data.cameras["Camera"].ortho_scale = s
 
 def ToggleRender(col, shot):
@@ -50,24 +50,31 @@ def ToggleRender(col, shot):
 
 move(0, 2); scale(1);
 
-# render( "unknown", "image" )
+bpy.data.materials["Material"].node_tree.nodes["Mix"].inputs[7].default_value = [1.000000, 0.000000, 1.000000, 1.000000]
+render( "unknown", "image" )
 
-# move(0, 0)
+bpy.data.materials["Material"].node_tree.nodes["Mix"].inputs[7].default_value = [0.000000, 0.000000, 1.000000, 1.000000]
+render( "unknown", "tile" )
 
-# for x in range(12):
-#     bpy.data.objects["Path"].modifiers["GeometryNodes"]["Socket_2"] = x
-#     render( "path", headings[x] )
 
-# move(0, 4)
+move(0, 0)
 
-# for x in range(12):
-#     bpy.data.objects["Grass"].modifiers["GeometryNodes"]["Socket_2"] = x
-#     render( "grass", headings[x] )
+for x in range(12):
+    bpy.data.objects["Path"].modifiers["GeometryNodes"]["Socket_2"] = x
+    render( "path", headings[x] )
 
+move(0, 4)
+
+for x in range(12):
+    bpy.data.objects["Grass"].modifiers["GeometryNodes"]["Socket_2"] = x
+    render( "grass", headings[x] )
+
+degreeRanges = range(0, 360, 10)
 move(2, 2); scale(1.5);
 
+
 # simple pew pew
-for degree in range(0, 360, 20):
+for degree in degreeRanges:
     ToggleRender("Simple Turret", False)
     
     for rot in [0, -19/3 -19/3*2]:
@@ -81,8 +88,9 @@ for degree in range(0, 360, 20):
     
 move(4, 2); scale(2);
 
+
 # chain pew pew
-for degree in range(0, 360, 20):
+for degree in degreeRanges:
     ToggleRender("Chain Turret", False)
     
     for rot in [0, -46.3/3 -46.3/3*2]:
@@ -97,7 +105,7 @@ for degree in range(0, 360, 20):
 move(6, 2); scale(2.5);
 
 # sniper
-for degree in range(0, 360, 20):
+for degree in degreeRanges:
     ToggleRender("Sniper Turret", False)
     
     for recoil in [0]:  # add later maybe
@@ -111,7 +119,7 @@ for degree in range(0, 360, 20):
 move(8, 2); scale(1);
 
 # sniper
-for degree in range(0, 360, 20):
+for degree in degreeRanges:
     ToggleRender("Bonk Turret", False)
     
     for recoil in [0]:  # add later maybe

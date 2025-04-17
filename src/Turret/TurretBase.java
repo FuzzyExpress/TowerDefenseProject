@@ -1,8 +1,17 @@
 package Turret;
 
 import Entity.Enemy;
+import Utility.GameSettings;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+
+import static java.lang.Math.round;
 
 public abstract class TurretBase {
     protected String name;
@@ -13,8 +22,12 @@ public abstract class TurretBase {
     protected int fireRate;
     protected long lastFireTime;
     private boolean hovered = false;
+    private String imagePath;
+    private double rotation = 0;
+    private Boolean shooting = false;
+    private HashMap<String, BufferedImage> cachedImages = new HashMap<>();
 
-    public TurretBase(String name, int cost, int damage, int range, int x, int y, int fireRate) {
+    public TurretBase(String name, int cost, int damage, int range, int x, int y, int fireRate, String imagePath) {
         this.name = name;
         this.cost = cost;
         this.damage = damage;
@@ -23,6 +36,7 @@ public abstract class TurretBase {
         this.y = y;
         this.fireRate = fireRate;
         this.lastFireTime = 0;
+        this.imagePath = imagePath;
     }
 
     public abstract void attack(Enemy enemy);
@@ -35,6 +49,13 @@ public abstract class TurretBase {
             if (isInRange(enemy) && enemy.isAlive()) {
                 attack(enemy);
                 lastFireTime = now;
+
+                // Calculate rotation angle to enemy
+                double dx = enemy.getX() - x;
+                double dy = enemy.getY() - y;
+                rotation = -Math.atan2(dy, dx); // Negate the angle to reverse the rotation direction
+                shooting = true;
+                
                 break;
             }
         }
@@ -43,20 +64,56 @@ public abstract class TurretBase {
     protected boolean isInRange(Enemy enemy) {
         double dx = enemy.getX() - x;
         double dy = enemy.getY() - y;
-        return Math.sqrt(dx * dx + dy * dy) <= range * 40;
+        return Math.sqrt(dx * dx + dy * dy) <= range * GameSettings.getTileSize();
     }
 
     public void setHovered(boolean hovered) {
         this.hovered = hovered;
     }
 
+    public BufferedImage getImage(String path) {
+        BufferedImage image = null;
+        try {
+            if (!cachedImages.containsKey(path)) {
+                cachedImages.put(path, ImageIO.read(new File(path)));
+            }
+
+            image = cachedImages.get(path);
+            
+        } catch (IOException e) {
+            System.out.println("TurretLoadFailed: " + path);
+            e.printStackTrace();
+        }
+        return image;
+    }
+
     public void draw(Graphics g, Color turretColor) {
-        g.setColor(turretColor);
-        g.fillRect(x - 10, y - 10, 20, 20);
+        // g.setColor(turretColor);
+        // g.fillRect(x - 10, y - 10, 20, 20);
+
+        
+
+        String path = "art/" + imagePath + "/" + imagePath + "-" + 
+                round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10
+                + "-" + 0 + ".png";
+        BufferedImage image = getImage(path);
+        int turretSize = image.getWidth();
+        g.drawImage(image, x - turretSize/2, y - turretSize/2, turretSize, turretSize, null);   
+
+        if (shooting) {
+            shooting = false;
+            String pathFlash = "art/" + imagePath + "/" + imagePath + "-" + 
+                    round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10
+                    + "-flash.png";
+            BufferedImage imageFlash = getImage(pathFlash);
+            int turretSizeFlash = imageFlash.getWidth();
+            g.drawImage(imageFlash, x - turretSizeFlash/2, y - turretSizeFlash/2, turretSizeFlash, turretSizeFlash, null);
+        }
 
         if (hovered) {
+            int rangeRadius = range * GameSettings.getTileSize();
             g.setColor(turretColor);
-            g.drawOval(x - range * 40, y - range * 40, range * 80, range * 80);
+            g.drawOval(x - rangeRadius, y - rangeRadius, rangeRadius * 2, rangeRadius * 2);
         }
     }
 

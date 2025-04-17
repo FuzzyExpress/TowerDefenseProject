@@ -9,6 +9,7 @@ import Entity.Broodmother;
 import Map.MapLoader;
 import Map.PathFinder;
 import Turret.TurretBase;
+import Utility.GameSettings;
 
 public class GameManager {
     private List<Enemy> enemies;
@@ -168,7 +169,7 @@ public class GameManager {
     public void addEnemy(Enemy enemy) {
         if (path != null && !path.isEmpty()) {
             Point start = path.get(0);
-            enemy.setPosition(start.x * 40, start.y * 40);
+            enemy.setPosition(GameSettings.tileToScreen(start.x), GameSettings.tileToScreen(start.y));
             enemy.setPath(new ArrayList<>(path));
         }
         enemies.add(enemy);

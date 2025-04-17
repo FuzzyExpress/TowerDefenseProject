@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.Arrays;
 import java.util.ArrayList;
+import Utility.GameSettings;
 
 public class Tile {
     private int x;
@@ -31,7 +32,8 @@ public class Tile {
     }
 
     public void draw(Graphics g) {
-        g.drawImage(getImage(), x*40, y*40, null);
+        int tileSize = GameSettings.getTileSize();
+        g.drawImage(getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
     }
 
     private boolean verifyHeading(int x, int y, int[][] map, ArrayList<Tiles> connectable) {

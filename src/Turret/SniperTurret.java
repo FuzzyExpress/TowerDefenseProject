@@ -1,11 +1,13 @@
 package Turret;
 
 import Entity.Enemy;
+import Utility.GameSettings;
+
 import java.awt.*;
 
 public class SniperTurret extends TurretBase {
     public SniperTurret(int x, int y) {
-        super("Sniper Turret", 300, 200, 10, x, y, 5000);
+        super("Sniper Turret", 300, 200, 10, x, y, 5000, "SniperTurret");
     }
 
     @Override
@@ -19,6 +21,6 @@ public class SniperTurret extends TurretBase {
         g.setColor(Color.PINK);
         g.fillRect(x - 10, y - 10, 20, 20);
         g.setColor(Color.WHITE);
-        g.drawOval(x - range * 40, y - range * 40, range * 80, range * 80);
+        g.drawOval(x - range * GameSettings.getTileSize(), y - range * GameSettings.getTileSize(), range * 2 * GameSettings.getTileSize(), range * 2 * GameSettings.getTileSize());
     }
 }
