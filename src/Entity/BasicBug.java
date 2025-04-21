@@ -9,4 +9,10 @@ public class BasicBug extends Enemy {
     public BasicBug(int x, int y) {
         super(DEFAULT_HEALTH, DEFAULT_SPEED, x, y,"art/Bugs/Bug.png");
     }
+
+    @Override
+    public int getPointValue() {
+        return 100;
+    }
+
 }

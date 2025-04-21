@@ -19,6 +19,8 @@ public abstract class Enemy {
     private int currentIndex = 0;
     private BufferedImage image;
     private String imagePath;
+    public abstract int getPointValue();
+
     public Enemy(int health, float speed, int x, int y, String imagePath) {
         this.health = health;
         this.maxHealth = health;  // Store the initial health as max health

@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class SniperTurret extends TurretBase {
     public SniperTurret(int x, int y) {
-        super("Sniper Turret", 300, 200, 10, x, y, 5000, "SniperTurret");
+        super("Sniper Turret", 2500, 200, 10, x, y, 5000, "SniperTurret");
     }
 
     @Override

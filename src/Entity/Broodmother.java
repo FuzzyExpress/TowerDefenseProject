@@ -9,7 +9,12 @@ public class Broodmother extends Enemy {
     public Broodmother(int startX, int startY) {
         super(400, 0.7f, startX, startY, "art/Bugs/Broodmother.png");
     }
-    
+
+    @Override
+    public int getPointValue() {
+        return 300;
+    }
+
     // Override takeDamage to trigger onDeath() when health reaches 0.
     @Override
     public void takeDamage(int damage) {

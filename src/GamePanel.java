@@ -66,7 +66,15 @@ public class GamePanel extends JPanel {
                     default -> new BasicTurret(px, py);
                 };
 
-                gameManager.addTurret(turret);
+                // Attempt to place using ScoreManager
+                if (!gameManager.tryPlaceTurret(turret)) {
+                    JOptionPane.showMessageDialog(GamePanel.this,
+                            "Not enough points to place a " + turret.getName() +
+                                    " (" + turret.getCost() + " pts)",
+                            "Insufficient Points",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+
             }
         });
 
@@ -96,7 +104,7 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        setBackground(Color.lightGray);
         for (Tile[] tileRow : tiles) {
             for (Tile tile : tileRow) {
                 tile.draw(g);
@@ -141,6 +149,19 @@ public class GamePanel extends JPanel {
         g.setFont(new Font("Arial", Font.BOLD, 14));
         g.drawString("Base Health: " + gameManager.getBaseHealth(), 10, 20);
         g.drawString("Wave: " + gameManager.getWaveCount(), 10, 40);
+        g.drawString("Points: " + gameManager.getScoreManager().getScore(), 150, 40);
+
+        // Tower Table
+        int Y =500;
+        int X =5;
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        g.setColor(Color.RED);
+        g.drawString("Turret Costs:", X, Y);
+        g.drawString("Basic: 800", X, Y + 15);
+        g.drawString("Heavy: 1200", X, Y + 30);
+        g.drawString("Rapid: 1000", X, Y + 45);
+        g.drawString("Sniper: 2500", X, Y + 60);
+
 
         int messageX = 90;
         int messageY = 105;

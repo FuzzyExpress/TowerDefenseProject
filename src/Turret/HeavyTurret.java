@@ -8,7 +8,7 @@ import java.util.List;
 
 public class HeavyTurret extends TurretBase {
     public HeavyTurret(int x, int y) {
-        super("Heavy Turret", 300, 50, 3, x, y, 3333, "BonkTurret");
+        super("Heavy Turret", 1200, 50, 3, x, y, 3333, "BonkTurret");
     }
 
     @Override

@@ -6,4 +6,9 @@ public class FastBug extends Enemy {
     }
     
     // You could override update() for special movement logic if needed.
+    @Override
+    public int getPointValue() {
+        return 200;
+    }
+
 }

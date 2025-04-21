@@ -13,6 +13,11 @@ public class Beetle extends Enemy {
         }
     }
 
+    @Override
+    public int getPointValue() {
+        return 200;
+    }
+
     // Method triggered on death to perform the collision charge.
     public void onDeath() {
         System.out.println("Beetle died. Charging toward the nearest turret to deal collision damage.");

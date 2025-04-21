@@ -6,10 +6,13 @@ import javax.swing.JOptionPane;
 import Entity.Enemy;
 import Entity.BasicBug;
 import Entity.Broodmother;
+import Entity.FastBug;
 import Map.MapLoader;
 import Map.PathFinder;
 import Turret.TurretBase;
 import Utility.GameSettings;
+import Utility.ScoreManager;
+
 
 public class GameManager {
     private List<Enemy> enemies;
@@ -18,6 +21,7 @@ public class GameManager {
     private int waveCount;
     private List<Point> path;
     private boolean gameOver;
+    private ScoreManager scoreManager = new ScoreManager();
 
     private boolean waitingForNextWave = false;
     private long waveCountdownStart = 0;
@@ -88,14 +92,17 @@ public class GameManager {
             e.update();
 
             if (!e.isAlive()) {
+                scoreManager.addPoints(e.getPointValue());
                 if (e instanceof Broodmother broodmother) {
                     toAdd.add(new BasicBug(broodmother.getX(), broodmother.getY()));
                     toAdd.add(new BasicBug(broodmother.getX(), broodmother.getY()));
                     toAdd.add(new BasicBug(broodmother.getX(), broodmother.getY()));
                     broodmother.onDeath();
                 }
+
                 toRemove.add(e);
-            } else if (e.hasReachedEnd()) {
+
+        } else if (e.hasReachedEnd()) {
                 baseHealth -= 10;
                 toRemove.add(e);
             }
@@ -119,23 +126,50 @@ public class GameManager {
         }
     }
 
+    public ScoreManager getScoreManager() {
+        return scoreManager;
+    }
+
     private void startNextWave() {
         waveCount++;
-        int enemiesToSpawn = waveCount * 5;
-
         spawnQueue.clear();
-        for (int i = 0; i < enemiesToSpawn; i++) {
-            if (waveCount % 2 == 0) {
-                spawnQueue.add(new Broodmother(0, 0)); // Even waves
-            } else {
-                spawnQueue.add(new BasicBug(0, 0));    // Odd waves
+
+        switch (waveCount) {
+            case 1 -> spawnEnemies(5, 0, 0); // 5 Basic
+            case 2 -> spawnAlternatingEnemies(10); // 10 alternating Basic/Fast
+            case 3 -> spawnEnemies(5, 5, 5); // 5,5,5
+            case 4 -> spawnEnemies(10, 5, 5); // 10,5,5
+            case 5 -> spawnEnemies(15, 10, 0); // 15,10
+            case 6 -> spawnEnemies(10, 5, 15); // 10,5,15
+            default -> {
+                // After wave 6 just scale up gradually
+                int basics = 10 + (waveCount - 6) * 5;
+                int fasts = 5 + (waveCount % 3) * 3;
+                int broods = (waveCount % 2 == 0) ? 10 : 5;
+                spawnEnemies(basics, fasts, broods);
             }
         }
 
         lastSpawnTime = System.currentTimeMillis();
-        System.out.println("Wave " + waveCount + " queued with " + enemiesToSpawn +
-                (waveCount % 2 == 0 ? " Broodmothers." : " Basic Bugs."));
+        System.out.println("Wave " + waveCount + " spawned with " + spawnQueue.size() + " enemies.");
     }
+
+    private void spawnEnemies(int basic, int fast, int brood) {
+        for (int i = 0; i < basic; i++) spawnQueue.add(new BasicBug(0, 0));
+        for (int i = 0; i < fast; i++) spawnQueue.add(new FastBug(0, 0));
+        for (int i = 0; i < brood; i++) spawnQueue.add(new Broodmother(0, 0));
+    }
+
+    private void spawnAlternatingEnemies(int total) {
+        for (int i = 0; i < total; i++) {
+            if (i % 2 == 0) {
+                spawnQueue.add(new BasicBug(0, 0));
+            } else {
+                spawnQueue.add(new FastBug(0, 0));
+            }
+        }
+    }
+
 
     private void showGameOverDialog() {
         int choice = JOptionPane.showOptionDialog(null,
@@ -164,6 +198,16 @@ public class GameManager {
         isFirstWave = true;
         spawnQueue.clear();
         firstWaveStartTime = System.currentTimeMillis();
+        scoreManager.reset();
+    }
+
+    public boolean tryPlaceTurret(TurretBase turret) {
+        if (scoreManager.getScore() >= turret.getCost()) {
+            scoreManager.deductScore(turret.getCost());
+            turrets.add(turret);
+            return true;
+        }
+        return false;
     }
 
     public void addEnemy(Enemy enemy) {
