@@ -36,31 +36,48 @@ public class Tile {
         g.drawImage(getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
     }
 
-    private boolean verifyHeading(int x, int y, int[][] map, ArrayList<Tiles> connectable) {
+    private boolean verifyHeading(int x, int y, int[][] map, ArrayList<Tiles> connectable, boolean invert) {
         if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
-            return false;
+            return invert ? true : false;
         }
         if (connectable.contains( TileMapper.GetTile(map[x][y]) )) {
-            return true;
+            return invert ? false : true;
         }
-        return false;
+        return invert ? true : false;
     }
 
     public String calculateHeading(int[][] map) {
-        ArrayList<Tiles> connectable = new ArrayList<>(Arrays.asList(Tiles.PATH, Tiles.SPAWNER, Tiles.END));
+        ArrayList<Tiles> connectable = new ArrayList<>();
+        if (tile == Tiles.PATH || tile == Tiles.SPAWNER || tile == Tiles.END) {
+            connectable = new ArrayList<>(Arrays.asList(Tiles.PATH, Tiles.SPAWNER, Tiles.END));
+        } else if (tile == Tiles.GRASS) {
+            connectable = new ArrayList<>(Arrays.asList(Tiles.GRASS));
+        } else if (tile == Tiles.TREES) {
+            connectable = new ArrayList<>(Arrays.asList(Tiles.TREES));
+        } else if (tile == Tiles.WATER) {
+            connectable = new ArrayList<>(Arrays.asList(Tiles.WATER));
+        } else if (tile == Tiles.SAND) {
+            connectable = new ArrayList<>(Arrays.asList(Tiles.SAND));
+        } else if (tile == Tiles.STONE) {
+            connectable = new ArrayList<>(Arrays.asList(Tiles.STONE));
+        } else {
+            connectable = new ArrayList<>(Arrays.asList(tile));
+        }
+
         String tileHeading = "";
 
-        if (tile == Tiles.PATH) {
-            if   (verifyHeading(x, y-1, map, connectable)) {
-                tileHeading += "N";
-            } if (verifyHeading(x, y+1, map, connectable)) {
-                tileHeading += "S";
-            } if (verifyHeading(x-1, y, map, connectable)) {
-                tileHeading += "W";
-            } if (verifyHeading(x+1, y, map, connectable)) {
-                tileHeading += "E";
-            }
+        boolean invert = tile != Tiles.PATH;
+
+        if   (verifyHeading(x, y-1, map, connectable, invert)) {
+            tileHeading += "N";
+        } if (verifyHeading(x, y+1, map, connectable, invert)) {
+            tileHeading += "S";
+        } if (verifyHeading(x-1, y, map, connectable, invert)) {
+            tileHeading += "W";
+        } if (verifyHeading(x+1, y, map, connectable, invert)) {
+            tileHeading += "E";
         }
+        
 
         String tileName = tile.toString().toLowerCase();
 
@@ -71,7 +88,7 @@ public class Tile {
 
         this.tileName = tileName;
 
-        // System.err.println(tileName + " " + tileHeading);
+        System.err.println(tileName + " " + tileHeading);
 
         return tileHeading;
     }
