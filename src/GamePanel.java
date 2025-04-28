@@ -18,13 +18,13 @@ public class GamePanel extends JPanel {
     private List<Point> path;
     private JComboBox<String> turretSelector;
     private int[][] rawMap;
-
+    private  Image pauseImage;
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap("src/Map/Test.png");
         rawMap = mapLoader.getMapData();
-
+        pauseImage = new ImageIcon("Art/pause.png").getImage();
         tiles = new Tile[mapLoader.getWidth()][mapLoader.getHeight()];
         for (int x = 0; x < mapLoader.getWidth(); x++) {
             for (int y = 0; y < mapLoader.getHeight(); y++) {
@@ -124,6 +124,7 @@ public class GamePanel extends JPanel {
         //     }
         // }
 
+
         for (Enemy enemy : gameManager.getEnemies()) {
             enemy.draw(g);
         }
@@ -139,6 +140,17 @@ public class GamePanel extends JPanel {
         }
 
         drawHUD(g);
+
+        if (gameManager.isPaused())
+        {
+            int imgWidth = pauseImage.getWidth(this)/8;
+            int imgHeight = pauseImage.getHeight(this)/8;
+
+            int centerX = (getWidth() - imgWidth) / 6;
+            int centerY = (getHeight() - imgHeight)/ 2;
+
+            g.drawImage(pauseImage, centerX, centerY, imgWidth, imgHeight, this);
+        }
     }
 
     private void drawHUD(Graphics g) {
@@ -174,5 +186,11 @@ public class GamePanel extends JPanel {
             int timeLeft = gameManager.getCountdownTimeLeft();
             g.drawString("Next wave in: " + timeLeft + "s", messageX, messageY);
         }
+
+        int pauseX= 150;
+        int pauseY= 500;
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 16));
+        g.drawString("Press P to Pause/Play", pauseX, pauseY);
     }
 }

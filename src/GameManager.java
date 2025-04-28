@@ -30,6 +30,8 @@ public class GameManager {
     private boolean isFirstWave = true;
     private long firstWaveStartTime;
 
+    //Pause
+    private boolean isPaused = false;
     // Staggered spawn queue
     private List<Enemy> spawnQueue = new ArrayList<>();
     private long lastSpawnTime = 0;
@@ -50,13 +52,24 @@ public class GameManager {
         lastSpawnTime = System.currentTimeMillis();
     }
 
+    //Pause
+    public void togglePause()
+    {
+        isPaused = !isPaused;
+    }
+
+    public boolean isPaused()
+    {
+        return isPaused;
+    }
+
     public void startGame() {
         GameLoop loop = new GameLoop(this);
         loop.start();
     }
 
     public void update() {
-        if (gameOver) return;
+        if (gameOver || isPaused) return;
 
         long currentTime = System.currentTimeMillis();
 

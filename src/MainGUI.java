@@ -42,6 +42,23 @@ public class MainGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);
+
+        //Check for Pause
+        frame.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if (e.getKeyCode() == KeyEvent.VK_P)
+                {
+                    gameManager.togglePause();
+                }
+            }
+        });
+        frame.setFocusable(true);
+        //Make P recognized anywhere in the window
+        frame.requestFocusInWindow();
+
         frame.setVisible(true);
 
         gameManager.startGame();
