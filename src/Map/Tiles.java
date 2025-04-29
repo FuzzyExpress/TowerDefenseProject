@@ -20,7 +20,7 @@ public enum Tiles {
     ;
 
     public boolean isPath() {
-        return this == PATH;
+        return (this == PATH || this == SPAWNER || this == END);
     }
 
     public void draw(Graphics g, String heading, int x, int y) 

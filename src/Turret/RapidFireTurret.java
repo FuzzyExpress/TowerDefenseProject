@@ -13,7 +13,7 @@ public class RapidFireTurret extends TurretBase {
     @Override
     public void attack(Enemy enemy) {
         enemy.takeDamage(damage);
-        System.out.println(name + " rapid-hit for " + damage);
+        // System.out.println(name + " rapid-hit for " + damage);
     }
 
     @Override

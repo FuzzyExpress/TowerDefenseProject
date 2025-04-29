@@ -14,7 +14,7 @@ public class HeavyTurret extends TurretBase {
     @Override
     public void attack(Enemy enemy) {
         enemy.takeDamage(damage);
-        System.out.println(name + " hit for " + damage);
+        // System.out.println(name + " hit for " + damage);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class HeavyTurret extends TurretBase {
             }
         }
 
-        System.out.println(name + " AOE fired");
+        // System.out.println(name + " AOE fired");
         lastFireTime = now;
     }
 

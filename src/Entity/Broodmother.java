@@ -28,7 +28,7 @@ public class Broodmother extends Enemy {
     public void onDeath() {
         spawnTriggered = true;
         deathTime = System.currentTimeMillis();
-        System.out.println("Broodmother died. Will spawn 3 Basic Bugs after 5 seconds.");
+        // System.out.println("Broodmother died. Will spawn 3 Basic Bugs after 5 seconds.");
         // In a real game, you might schedule a timer or flag an event here.
     }
 
@@ -47,7 +47,7 @@ public class Broodmother extends Enemy {
     
     // Placeholder method for spawning bugs.
     private void spawnBasicBugs() {
-        System.out.println("Spawning 3 Basic Bugs from Broodmother's corpse.");
+        // System.out.println("Spawning 3 Basic Bugs from Broodmother's corpse.");
         // TODO: Integrate with your enemy/spawn manager to actually create 3 BasicBug instances.
     }
 }

@@ -20,7 +20,7 @@ public class Beetle extends Enemy {
 
     // Method triggered on death to perform the collision charge.
     public void onDeath() {
-        System.out.println("Beetle died. Charging toward the nearest turret to deal collision damage.");
+        // // // System.out.println("Beetle died. Charging toward the nearest turret to deal collision damage.");
         // TODO: Implement logic to find the nearest turret and apply collision damage.
     }
 }

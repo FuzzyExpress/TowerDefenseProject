@@ -185,7 +185,7 @@ public class GameManager {
         }
 
         lastSpawnTime = System.currentTimeMillis();
-        System.out.println("Wave " + waveCount + " spawned with " + spawnQueue.size() + " enemies.");
+        // System.out.println("Wave " + waveCount + " spawned with " + spawnQueue.size() + " enemies.");
     }
 
     private void spawnEnemies(int basic, int fast, int brood) {

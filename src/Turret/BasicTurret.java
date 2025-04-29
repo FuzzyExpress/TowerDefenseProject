@@ -13,7 +13,7 @@ public class BasicTurret extends TurretBase {
     @Override
     public void attack(Enemy enemy) {
         enemy.takeDamage(damage);
-        System.out.println(name + " hit for " + damage);
+        // System.out.println(name + " hit for " + damage);
     }
 
     @Override

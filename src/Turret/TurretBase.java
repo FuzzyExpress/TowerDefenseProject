@@ -82,7 +82,7 @@ public abstract class TurretBase {
                     cachedImages.put(path, img);
                     lastGoodImage = img; // Save the last successful load
                 } else {
-                    System.out.println("TurretLoadFailed: " + path);
+                    // System.out.println("TurretLoadFailed: " + path);
                     // Use the last successfully loaded image
                     if (lastGoodImage != null) {
                         cachedImages.put(path, lastGoodImage);
