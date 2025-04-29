@@ -3,6 +3,7 @@ import Map.MapLoader;
 import Map.PathFinder;
 import Map.Tile;
 import Map.TileMapper;
+import Map.Tiles;
 import Turret.*;
 import Utility.GameSettings;
 
@@ -138,7 +139,11 @@ public class GamePanel extends JPanel {
         // Draw tiles with offset
         for (Tile[] tileRow : tiles) {
             for (Tile tile : tileRow) {
-                tile.draw(g2d);
+                if (tile.getTile() == Tiles.END) {
+                    tile.draw(g2d, gameManager.getBaseHealth());
+                } else {
+                    tile.draw(g2d);
+                }
             }
         }
 

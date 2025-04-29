@@ -4,7 +4,7 @@ import math
 
 bpy.data.scenes["Scene"].render.film_transparent = True
 
-def render(name, heading):
+def render(name, heading=None):
     # Set render output path
     output_dir = f"//{name}"  # Relative to blend file location
     if not os.path.exists(bpy.path.abspath(output_dir)):
@@ -29,7 +29,7 @@ def renderTile(name):
         print(f"heading {name}:", heading)
         for i in range(8):
             # bpy.data.node_groups["BoolController"].nodes["3"].boolean
-            bpy.data.node_groups["BoolController"].nodes[f"{i}"].inputs[0].default_value = heading[i] == "1"
+            bpy.data.node_groups["BoolController"].nodes[f"{i}"].boolean = heading[i] == "1"
         render(name, heading)   
         
 
@@ -65,13 +65,55 @@ render( "unknown", "image" )
 bpy.data.materials["Material"].node_tree.nodes["Mix"].inputs[7].default_value = [0.000000, 0.000000, 1.000000, 1.000000]
 render( "unknown", "tile" )
 
+scale(1);
+size(200)
+move(2, 4);
+render('bugs', 'bug')
+
+move(3, 4);
+render('bugs', 'broodmother')
+
+move(4, 4);
+render('bugs', 'beetle')
+
+move(5, 4);
+render('bugs', 'fast bug')
+
+scale(1);size(60)
+
+
+
+# Render bug in 4 rotations
+move(2, 4)
+for i in range(4):
+    bpy.data.objects["Bug"].rotation_euler[2] = i * 1.5708 # 90 degrees in radians
+    render('bugs', f'bug-{i*90}')
+
+# Render broodmother in 4 rotations  
+move(3, 4)
+for i in range(4):
+    bpy.data.objects["Broodmother"].rotation_euler[2] = i * 1.5708
+    render('bugs', f'broodmother-{i*90}')
+
+# Render beetle in 4 rotations
+move(4, 4)
+for i in range(4):
+    bpy.data.objects["Beetle"].rotation_euler[2] = i * 1.5708
+    render('bugs', f'beetle-{i*90}')
+
+# Render fast bug in 4 rotations
+move(5, 4)
+for i in range(4):
+    bpy.data.objects["FastBug"].rotation_euler[2] = i * 1.5708
+    render('bugs', f'fast bug-{i*90}')
+
 
 move(0, 0)
 
 # for x in range(12):
 #     bpy.data.objects["Path"].modifiers["GeometryNodes"]["Socket_2"] = x
 #     render( "path", headings[x] )
-renderTile("path")
+#renderTile("path")
 
 move(0, 4)
 
@@ -79,14 +121,46 @@ move(0, 4)
 #     bpy.data.objects["Grass"].modifiers["GeometryNodes"]["Socket_2"] = x
 #     render( "grass", headings[x] )
 
-renderTile("grass")
+def color(one, two):
+    bpy.data.materials["Grass"].node_tree.nodes["Mix"].inputs[6].default_value = one
+    bpy.data.materials["Grass"].node_tree.nodes["Mix"].inputs[7].default_value = two
+
+
+color( [0.001638, 0.130842, 0.000000, 1.000000], [0.008741, 0.867700, 0.000000, 1.000000] )
+#renderTile("grass")
+
+color( [0.318487, 0.578555, 1.000000, 1.000000], [0.000000, 0.280173, 0.734203, 1.000000] )
+#renderTile("water")
+
+color( [0.120199, 0.120199, 0.120199, 1.000000], [0.053466, 0.053466, 0.053466, 1.000000] )
+#renderTile("stone")
+
+color( [0.912142, 0.732949, 0.043218, 1.000000], [1.000000, 0.711504, 0.164064, 1.000000] )
+#renderTile("sand")
+
+#color( ,  )
+#renderTile("stone")
+
+#color( ,  )
+#renderTile("stone")
+
+
+    
+    
+move(0, 6); scale(1.5);
+for x in range(10):
+    col = bpy.data.collections.get("Sugar").objects
+    for i in range(10): 
+        col[f"Sugar.{i}"].hide_render = x > i
+    render( "sugar", f"{10-x}" )   
+
+raise Exception("stop")
 
 
 degreeRanges = range(0, 360, 10)
 move(2, 2); scale(1.5);
 
 
-raise Exception("stop")
 
 # simple pew pew
 for degree in degreeRanges:

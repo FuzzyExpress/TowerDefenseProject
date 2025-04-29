@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.List;
 import Utility.GameSettings;
+import java.awt.Graphics2D;
 
 public abstract class Enemy {
     private int health;
@@ -19,6 +20,7 @@ public abstract class Enemy {
     private int currentIndex = 0;
     private BufferedImage image;
     private String imagePath;
+    private double rotation = 0;
     public abstract int getPointValue();
 
     public Enemy(int health, float speed, int x, int y, String imagePath) {
@@ -62,6 +64,11 @@ public abstract class Enemy {
         float dx = targetX - exactX;
         float dy = targetY - exactY;
         float dist = (float) Math.sqrt(dx * dx + dy * dy);
+
+        // Calculate rotation angle
+        if (dist > 0) {
+            rotation = Math.atan2(dy, dx); // Remove the negative sign to fix vertical rotation
+        }
 
         if (dist < speed) {
             exactX = targetX;
@@ -108,7 +115,19 @@ public abstract class Enemy {
         int tileSize = GameSettings.getTileSize();
         
         if (image != null) {
-            g.drawImage(image, x, y, tileSize, tileSize, null);
+            // Save the current transform
+            Graphics2D g2d = (Graphics2D) g;
+            java.awt.geom.AffineTransform oldTransform = g2d.getTransform();
+            
+            // Translate to the center of the image
+            g2d.translate(x + tileSize/2, y + tileSize/2);
+            // Rotate around the center
+            g2d.rotate(rotation);
+            // Draw the image centered
+            g2d.drawImage(image, -tileSize/2, -tileSize/2, tileSize, tileSize, null);
+            
+            // Restore the original transform
+            g2d.setTransform(oldTransform);
         } else {
             g.setColor(java.awt.Color.RED);
             g.fillOval(x, y, tileSize, tileSize);

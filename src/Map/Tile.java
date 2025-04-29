@@ -32,7 +32,7 @@ public class Tile {
 
     private boolean verifyHeading(int x, int y, int[][] map, ArrayList<Tiles> connectable, boolean invert, boolean edgeConnect) {
         if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
-            if (edgeConnect) {
+            if (true) {// (edgeConnect) {
                 return invert ? false : true;
             }
             return invert ? true : false;
@@ -43,20 +43,16 @@ public class Tile {
         return invert ? true : false;
     }
 
+    public Tiles getTile() {
+        return tile;
+    }
+
     public String calculateHeading(int[][] map) {
         ArrayList<Tiles> connectable = new ArrayList<>();
         if (tile == Tiles.PATH || tile == Tiles.SPAWNER || tile == Tiles.END) {
             connectable = new ArrayList<>(Arrays.asList(Tiles.PATH, Tiles.SPAWNER, Tiles.END));
-        } else if (tile == Tiles.GRASS) {
-            connectable = new ArrayList<>(Arrays.asList(Tiles.GRASS));
-        } else if (tile == Tiles.TREES) {
-            connectable = new ArrayList<>(Arrays.asList(Tiles.TREES));
-        } else if (tile == Tiles.WATER) {
-            connectable = new ArrayList<>(Arrays.asList(Tiles.WATER));
-        } else if (tile == Tiles.SAND) {
-            connectable = new ArrayList<>(Arrays.asList(Tiles.SAND));
-        } else if (tile == Tiles.STONE) {
-            connectable = new ArrayList<>(Arrays.asList(Tiles.STONE));
+        } else if (tile == Tiles.GRASS || tile == Tiles.TREES) {
+            connectable = new ArrayList<>(Arrays.asList(Tiles.GRASS, Tiles.TREES));
         } else {
             connectable = new ArrayList<>(Arrays.asList(tile));
         }
@@ -91,25 +87,10 @@ public class Tile {
         return tileName;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int baseHealth) {
+        Tiles.PATH.draw(g, heading, x, y);
+        String path = "art/sugar/sugar-" + baseHealth/10 + ".png";
         BufferedImage image;
-
-        if (tile == Tiles.UNKNOWN) {
-            try {
-                image = ImageIO.read(new File( "art/unknown/tile.png" ));
-            } catch (IOException e) {
-                System.err.println("Unknown Image: art/unknown/tile.png");
-                return;
-            }
-        }
-
-        String tileName = tile.toString().toLowerCase();
-        
-        if (tile == Tiles.SPAWNER || tile == Tiles.END) {
-            tileName = "path";
-        }
-
-        String path = "art/" + tileName + "/" + tileName + "-" + heading + ".png";
 
         try {
             image = ImageIO.read(new File( path ));
@@ -122,9 +103,18 @@ public class Tile {
                 return;
             }
         }
-        
         int tileSize = GameSettings.getTileSize();
-        g.drawImage(image, x * tileSize, y * tileSize, tileSize, tileSize, null);
+        g.drawImage(image, x * tileSize - tileSize/3, y * tileSize - tileSize/3, tileSize + tileSize/2, tileSize + tileSize/2, null);
+    }
 
+    public void draw(Graphics g) {
+        
+        if (tile == Tiles.SPAWNER || tile == Tiles.END) {
+            Tiles.PATH.draw(g, heading, x, y);
+        } else if (tile == Tiles.TREES) {
+            Tiles.GRASS.draw(g, heading, x, y);
+        } else {
+            tile.draw(g, heading, x, y);
+        }
     }
 }
