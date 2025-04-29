@@ -18,7 +18,12 @@ public class GamePanel extends JPanel {
     private List<Point> path;
     private JComboBox<String> turretSelector;
     private int[][] rawMap;
-    private  Image pauseImage;
+    private Image pauseImage;
+    
+    // Add fields to store offsets
+    private int xOffset;
+    private int yOffset;
+    
     public GamePanel(GameManager gameManager) {
         this.gameManager = gameManager;
         MapLoader mapLoader = new MapLoader();
@@ -38,8 +43,19 @@ public class GamePanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                int tileX = GameSettings.screenToTile(e.getX());
-                int tileY = GameSettings.screenToTile(e.getY());
+                // Adjust mouse coordinates for the offset
+                int adjustedX = e.getX() - xOffset;
+                int adjustedY = e.getY() - yOffset;
+                
+                // Check if click is within the map bounds
+                if (adjustedX < 0 || adjustedY < 0 || 
+                    adjustedX >= tiles.length * GameSettings.getTileSize() ||
+                    adjustedY >= tiles[0].length * GameSettings.getTileSize()) {
+                    return;
+                }
+                
+                int tileX = GameSettings.screenToTile(adjustedX);
+                int tileY = GameSettings.screenToTile(adjustedY);
                 int px = GameSettings.tileToScreenCentered(tileX);
                 int py = GameSettings.tileToScreenCentered(tileY);
 
@@ -74,21 +90,22 @@ public class GamePanel extends JPanel {
                             "Insufficient Points",
                             JOptionPane.WARNING_MESSAGE);
                 }
-
             }
         });
 
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                int mx = e.getX();
-                int my = e.getY();
+                // Adjust mouse coordinates for the offset
+                int adjustedX = e.getX() - xOffset;
+                int adjustedY = e.getY() - yOffset;
 
                 for (TurretBase turret : gameManager.getTurrets()) {
                     int tx = turret.getX();
                     int ty = turret.getY();
                     int hoverDistance = GameSettings.getTileSize()/2;
-                    boolean hovered = Math.abs(mx - tx) < hoverDistance && Math.abs(my - ty) < hoverDistance;
+                    boolean hovered = Math.abs(adjustedX - tx) < hoverDistance && 
+                                    Math.abs(adjustedY - ty) < hoverDistance;
                     turret.setHovered(hovered);
                 }
 
@@ -105,30 +122,32 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.lightGray);
+        
+        // Calculate the total map size
+        int mapWidth = tiles.length * GameSettings.getTileSize();
+        int mapHeight = tiles[0].length * GameSettings.getTileSize();
+        
+        // Update the stored offsets
+        xOffset = (getWidth() - mapWidth) / 2;
+        yOffset = (getHeight() - mapHeight) / 2;
+        
+        // Create a translated graphics context
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.translate(xOffset, yOffset);
+        
+        // Draw tiles with offset
         for (Tile[] tileRow : tiles) {
             for (Tile tile : tileRow) {
-                tile.draw(g);
+                tile.draw(g2d);
             }
         }
 
-        // if (path != null && !path.isEmpty()) {
-        //     g.setColor(Color.YELLOW);
-        //     for (Point p : path) {
-        //         int dotSize = GameSettings.scaled(10);
-        //         int dotOffset = GameSettings.scaled(15);
-        //         g.fillOval(
-        //             GameSettings.tileToScreen(p.x) + dotOffset, 
-        //             GameSettings.tileToScreen(p.y) + dotOffset, 
-        //             dotSize, dotSize
-        //         );
-        //     }
-        // }
-
-
+        // Draw enemies with offset
         for (Enemy enemy : gameManager.getEnemies()) {
-            enemy.draw(g);
+            enemy.draw(g2d);
         }
 
+        // Draw turrets with offset
         for (TurretBase turret : gameManager.getTurrets()) {
             Color color = switch (turret.getName()) {
                 case "Heavy Turret" -> Color.RED;
@@ -136,13 +155,16 @@ public class GamePanel extends JPanel {
                 case "Sniper Turret" -> Color.MAGENTA;
                 default -> Color.BLUE;
             };
-            turret.draw(g, color);
+            turret.draw(g2d, color);
         }
+        
+        // Dispose of the translated graphics context
+        g2d.dispose();
 
+        // Draw HUD and pause overlay with original graphics context (no offset)
         drawHUD(g);
 
-        if (gameManager.isPaused())
-        {
+        if (gameManager.isPaused()) {
             int imgWidth = pauseImage.getWidth(this)/8;
             int imgHeight = pauseImage.getHeight(this)/8;
 
