@@ -94,7 +94,9 @@ public class GameManager {
         // Staggered enemy spawn
         if (!spawnQueue.isEmpty() && currentTime - lastSpawnTime >= SPAWN_DELAY_MS) {
             Enemy e = spawnQueue.remove(0);
-            addEnemy(e);
+            if (e != null) {
+                addEnemy(e);
+            }
             lastSpawnTime = currentTime;
         }
 
@@ -107,12 +109,31 @@ public class GameManager {
             if (!e.isAlive()) {
                 scoreManager.addPoints(e.getPointValue());
                 if (e instanceof Broodmother broodmother) {
-                    toAdd.add(new BasicBug(broodmother.getX(), broodmother.getY()));
-                    toAdd.add(new BasicBug(broodmother.getX(), broodmother.getY()));
-                    toAdd.add(new BasicBug(broodmother.getX(), broodmother.getY()));
+                    int motherX = broodmother.getX();
+                    int motherY = broodmother.getY();
+
+                    int closestIndex = 0;
+                    double closestDistance = Double.MAX_VALUE;
+
+                    for (int i = 0; i < path.size(); i++) {
+                        Point p = path.get(i);
+                        int pathX = GameSettings.tileToScreen(p.x);
+                        int pathY = GameSettings.tileToScreen(p.y);
+                        double dist = Math.hypot(motherX - pathX, motherY - pathY);
+                        if (dist < closestDistance) {
+                            closestDistance = dist;
+                            closestIndex = i;
+                        }
+                    }
+
+                    for (int i = 0; i < 3; i++) {
+                        BasicBug baby = new BasicBug(motherX, motherY);
+                        baby.setPath(new ArrayList<>(path.subList(closestIndex, path.size())));
+                        toAdd.add(baby);
+                    }
+
                     broodmother.onDeath();
                 }
-
                 toRemove.add(e);
 
         } else if (e.hasReachedEnd()) {
@@ -168,10 +189,23 @@ public class GameManager {
     }
 
     private void spawnEnemies(int basic, int fast, int brood) {
-        for (int i = 0; i < basic; i++) spawnQueue.add(new BasicBug(0, 0));
-        for (int i = 0; i < fast; i++) spawnQueue.add(new FastBug(0, 0));
-        for (int i = 0; i < brood; i++) spawnQueue.add(new Broodmother(0, 0));
+        for (int i = 0; i < basic; i++) {
+            spawnQueue.add(new BasicBug(0, 0));
+            spawnQueue.add(null); //Add a little more space between the basic bugs
+        }
+        for (int i = 0; i < fast; i++) {
+            spawnQueue.add(new FastBug(0, 0));
+        }
+        // Spread Broodmother spawns out by adding a "null" placeholder
+        for (int i = 0; i < brood; i++) {
+            spawnQueue.add(new Broodmother(0, 0));
+            // Add some padding for delay
+            for (int j = 0; j < 3; j++) {
+                spawnQueue.add(null); // add dummy slots between Broodmothers
+            }
+        }
     }
+
 
     private void spawnAlternatingEnemies(int total) {
         for (int i = 0; i < total; i++) {

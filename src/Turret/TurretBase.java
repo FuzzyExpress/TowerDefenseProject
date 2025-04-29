@@ -71,21 +71,34 @@ public abstract class TurretBase {
         this.hovered = hovered;
     }
 
+    private BufferedImage lastGoodImage = null; // add this at the top of TurretBase
+
     public BufferedImage getImage(String path) {
-        BufferedImage image = null;
         try {
             if (!cachedImages.containsKey(path)) {
-                cachedImages.put(path, ImageIO.read(new File(path)));
+                File file = new File(path);
+                if (file.exists()) {
+                    BufferedImage img = ImageIO.read(file);
+                    cachedImages.put(path, img);
+                    lastGoodImage = img; // Save the last successful load
+                } else {
+                    System.out.println("TurretLoadFailed: " + path);
+                    // Use the last successfully loaded image
+                    if (lastGoodImage != null) {
+                        cachedImages.put(path, lastGoodImage);
+                    } else {
+                        // If literally nothing has loaded yet, create a 1x1 blank
+                        cachedImages.put(path, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+                    }
+                }
             }
-
-            image = cachedImages.get(path);
-            
+            return cachedImages.get(path);
         } catch (IOException e) {
-            System.out.println("TurretLoadFailed: " + path);
             e.printStackTrace();
+            return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         }
-        return image;
     }
+
 
     public void draw(Graphics g, Color turretColor) {
         // g.setColor(turretColor);
