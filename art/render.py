@@ -22,11 +22,20 @@ def render(name, heading):
 
     print(f"Rendered image saved to: {bpy.path.abspath(bpy.context.scene.render.filepath)}") 
 
-
+def renderTile(name):
+    for x in range(2**8):
+        # Convert to 8-bit binary string, zero-padded
+        heading = format(x, '08b')
+        print(f"heading {name}:", heading)
+        for i in range(8):
+            # bpy.data.node_groups["BoolController"].nodes["3"].boolean
+            bpy.data.node_groups["BoolController"].nodes[f"{i}"].inputs[0].default_value = heading[i] == "1"
+        render(name, heading)   
+        
 
 # d = dot, NESW = North East South West
 # split by space for easy making
-headings = 'd S E N NS WE W SW NW NE SE NESW'.split()
+#headings = 'd S E N NS WE W SW NW NE SE NESW'.split()
 
 
 def size(s):
@@ -59,19 +68,25 @@ render( "unknown", "tile" )
 
 move(0, 0)
 
-for x in range(12):
-    bpy.data.objects["Path"].modifiers["GeometryNodes"]["Socket_2"] = x
-    render( "path", headings[x] )
+# for x in range(12):
+#     bpy.data.objects["Path"].modifiers["GeometryNodes"]["Socket_2"] = x
+#     render( "path", headings[x] )
+renderTile("path")
 
 move(0, 4)
 
-for x in range(12):
-    bpy.data.objects["Grass"].modifiers["GeometryNodes"]["Socket_2"] = x
-    render( "grass", headings[x] )
+# for x in range(12):
+#     bpy.data.objects["Grass"].modifiers["GeometryNodes"]["Socket_2"] = x
+#     render( "grass", headings[x] )
+
+renderTile("grass")
+
 
 degreeRanges = range(0, 360, 10)
 move(2, 2); scale(1.5);
 
+
+raise Exception("stop")
 
 # simple pew pew
 for degree in degreeRanges:

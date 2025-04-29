@@ -14,7 +14,6 @@ public class Tile {
     private int y;
     private Tiles tile;
     private String heading;
-    private String tileName;
 
     public Tile(int x, int y, int[][] map) {
         this.x = x;
@@ -31,13 +30,11 @@ public class Tile {
         return y;
     }
 
-    public void draw(Graphics g) {
-        int tileSize = GameSettings.getTileSize();
-        g.drawImage(getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
-    }
-
-    private boolean verifyHeading(int x, int y, int[][] map, ArrayList<Tiles> connectable, boolean invert) {
+    private boolean verifyHeading(int x, int y, int[][] map, ArrayList<Tiles> connectable, boolean invert, boolean edgeConnect) {
         if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
+            if (edgeConnect) {
+                return invert ? false : true;
+            }
             return invert ? true : false;
         }
         if (connectable.contains( TileMapper.GetTile(map[x][y]) )) {
@@ -66,57 +63,68 @@ public class Tile {
 
         String tileHeading = "";
 
-        boolean invert = tile != Tiles.PATH;
-
-        if   (verifyHeading(x, y-1, map, connectable, invert)) {
-            tileHeading += "N";
-        } if (verifyHeading(x, y+1, map, connectable, invert)) {
-            tileHeading += "S";
-        } if (verifyHeading(x-1, y, map, connectable, invert)) {
-            tileHeading += "W";
-        } if (verifyHeading(x+1, y, map, connectable, invert)) {
-            tileHeading += "E";
-        }
+        boolean invert = true; // tile != Tiles.PATH;
         
+        boolean edgeConnect = tile == Tiles.SPAWNER || tile == Tiles.END;
+        int[][] directions = {
+            {-1, -1}, {0, -1}, {1,  -1},  // Top row
+            {1,   0},              // Middle row
+            {1,   1}, {0,  1}, {-1,  1},     // Bottom row
+            {-1,  0}
+        };
+        
+        for (int[] dir : directions) {
+            tileHeading += verifyHeading(x + dir[0], y + dir[1], map, connectable, invert, edgeConnect) ? "1" : "0";
+        }
 
-        String tileName = tile.toString().toLowerCase();
-
-        if (tileHeading.length() > 0) {
-            tileName += "-" + tileHeading;
-        } else { tileName += "-d"; }
-
-
-        this.tileName = tileName;
-
-        System.err.println(tileName + " " + tileHeading);
 
         return tileHeading;
     }
 
-    private BufferedImage getImage() {
+    private String getTileName() {
+        String tileName = tile.toString().toLowerCase();
+
+        if (heading.length() > 0) {
+            tileName += "-" + heading;
+        } else { tileName += "-d"; }
+
+        return tileName;
+    }
+
+    public void draw(Graphics g) {
+        BufferedImage image;
 
         if (tile == Tiles.UNKNOWN) {
             try {
-                return ImageIO.read(new File( "art/unknown/tile.png" ));
+                image = ImageIO.read(new File( "art/unknown/tile.png" ));
             } catch (IOException e) {
                 System.err.println("Unknown Image: art/unknown/tile.png");
-                return null;
+                return;
             }
         }
 
-        String path = "art/" + tile.toString().toLowerCase() + "/" + this.tileName + ".png";
+        String tileName = tile.toString().toLowerCase();
+        
+        if (tile == Tiles.SPAWNER || tile == Tiles.END) {
+            tileName = "path";
+        }
+
+        String path = "art/" + tileName + "/" + tileName + "-" + heading + ".png";
 
         try {
-            return ImageIO.read(new File( path ));
+            image = ImageIO.read(new File( path ));
         } catch (IOException e) {
-            // System.err.println("Unknown Image: " + path);
+            System.err.println("Unknown Image: " + path);
             try {
-                return ImageIO.read(new File( "art/unknown/image.png" ));
+                image = ImageIO.read(new File( "art/unknown/image.png" ));
             } catch (IOException E) {
                 System.err.println("Unknown Image: art/unknown/image.png");
-                return null;
+                return;
             }
         }
+        
+        int tileSize = GameSettings.getTileSize();
+        g.drawImage(image, x * tileSize, y * tileSize, tileSize, tileSize, null);
 
     }
 }
