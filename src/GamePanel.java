@@ -173,7 +173,7 @@ public class GamePanel extends JPanel {
             int imgWidth = pauseImage.getWidth(this)/8;
             int imgHeight = pauseImage.getHeight(this)/8;
 
-            int centerX = (getWidth() - imgWidth) / 6;
+            int centerX = (getWidth() - imgWidth)/2;
             int centerY = (getHeight() - imgHeight)/ 2;
 
             g.drawImage(pauseImage, centerX, centerY, imgWidth, imgHeight, this);
@@ -218,6 +218,6 @@ public class GamePanel extends JPanel {
         int pauseY= 500;
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 16));
-        g.drawString("Press P to Pause/Play", pauseX, pauseY);
+        g.drawString("Press P to Pause/Play", pauseX, pauseY+275);
     }
 }
