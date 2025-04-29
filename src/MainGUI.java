@@ -65,7 +65,7 @@ public class MainGUI {
         frame.setLocationRelativeTo(null);
 
         //Check for Pause
-        frame.addKeyListener(new KeyAdapter() {
+        frame.getRootPane().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_P) {
@@ -73,8 +73,8 @@ public class MainGUI {
                 }
             }
         });
-        frame.setFocusable(true);
-        frame.requestFocusInWindow();
+        frame.getRootPane().setFocusable(true);
+        frame.getRootPane().requestFocusInWindow();
 
         frame.setVisible(true);
 
