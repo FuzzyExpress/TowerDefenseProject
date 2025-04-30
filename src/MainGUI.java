@@ -65,16 +65,17 @@ public class MainGUI {
         frame.setLocationRelativeTo(null);
 
         //Check for Pause
-        frame.getRootPane().addKeyListener(new KeyAdapter() {
+        InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = frame.getRootPane().getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke("P"), "togglePause");
+        actionMap.put("togglePause", new AbstractAction() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_P) {
-                    gameManager.togglePause();
-                }
+            public void actionPerformed(ActionEvent e) {
+                gameManager.togglePause();
             }
         });
-        frame.getRootPane().setFocusable(true);
-        frame.getRootPane().requestFocusInWindow();
+
 
         frame.setVisible(true);
 
