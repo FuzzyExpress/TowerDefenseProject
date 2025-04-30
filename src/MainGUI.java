@@ -33,7 +33,7 @@ public class MainGUI {
 
         // Calculate window size based on tile size
         int windowWidth = 20 * GameSettings.getTileSize();  // 20 tiles wide
-        int windowHeight = 15 * GameSettings.getTileSize(); // 15 tiles high
+        int windowHeight = 15 * GameSettings.getTileSize()- 200; // 15 tiles high
         gamePanel.setPreferredSize(new Dimension(windowWidth, windowHeight));
         
         // Create main panel with GridBagLayout
