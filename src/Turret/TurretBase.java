@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,7 +46,9 @@ public abstract class TurretBase {
         long now = System.currentTimeMillis();
         if (now - lastFireTime < fireRate) return;
 
-        for (Enemy enemy : enemies) {
+        // Create a copy of the list to avoid concurrent modification
+        List<Enemy> enemiesCopy = new ArrayList<>(enemies);
+        for (Enemy enemy : enemiesCopy) {
             if (isInRange(enemy) && enemy.isAlive()) {
                 attack(enemy);
                 lastFireTime = now;
@@ -82,7 +85,7 @@ public abstract class TurretBase {
                     cachedImages.put(path, img);
                     lastGoodImage = img; // Save the last successful load
                 } else {
-                    // System.out.println("TurretLoadFailed: " + path);
+                    System.out.println("TurretLoadFailed: " + path);
                     // Use the last successfully loaded image
                     if (lastGoodImage != null) {
                         cachedImages.put(path, lastGoodImage);
@@ -107,7 +110,8 @@ public abstract class TurretBase {
         
 
         String path = "art/" + imagePath + "/" + imagePath + "-" + 
-                round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10
+                (round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10 == 360 ? 0 : 
+                round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10)
                 + "-" + 0 + ".png";
         BufferedImage image = getImage(path);
         int turretSize = image.getWidth();
@@ -116,7 +120,8 @@ public abstract class TurretBase {
         if (shooting) {
             shooting = false;
             String pathFlash = "art/" + imagePath + "/" + imagePath + "-" + 
-                    round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10
+                    (round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10 == 360 ? 0 : 
+                    round( ((Math.toDegrees(rotation) - 90 + 360*2) % 360) / 10 ) * 10)
                     + "-flash.png";
             BufferedImage imageFlash = getImage(pathFlash);
             int turretSizeFlash = imageFlash.getWidth();

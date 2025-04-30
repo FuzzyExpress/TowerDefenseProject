@@ -19,8 +19,8 @@ public enum Tiles {
     UNKNOWN,
     ;
 
-    public boolean isPath() {
-        return (this == PATH || this == SPAWNER || this == END);
+    public boolean isPlaceable() {
+        return !(this == PATH || this == SPAWNER || this == END || this == WATER || this == STONE);
     }
 
     public void draw(Graphics g, String heading, int x, int y) 

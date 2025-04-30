@@ -81,10 +81,48 @@ public class MainGUI {
         gameManager.startGame();
         gameManager.addEnemy(new BasicBug(0, 0));
 
-        Timer gameTimer = new Timer(DELAY, e -> {
-            gameManager.update();
+        // Create a separate thread for game updates
+        Thread gameThread = new Thread(() -> {
+            long lastUpdateTime = System.nanoTime();
+            final long NANOS_PER_SECOND = 1_000_000_000;
+            final long TARGET_UPDATE_RATE = NANOS_PER_SECOND / 60; // 60 updates per second
+            
+            while (true) {
+                long currentTime = System.nanoTime();
+                long elapsedTime = currentTime - lastUpdateTime;
+                
+                if (elapsedTime >= TARGET_UPDATE_RATE) {
+                    if (!gameManager.isPaused()) {
+                        gameManager.update();
+                    }
+                    lastUpdateTime = currentTime;
+                } else {
+                    // Sleep for a short time to prevent busy waiting
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        gameThread.setDaemon(true);
+        gameThread.start();
+
+        // Separate timer for rendering
+        Timer renderTimer = new Timer(DELAY, e -> {
             gamePanel.repaint();
         });
-        gameTimer.start();
+        renderTimer.start();
+
+        // Add window listener to clean up resources when closing
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                renderTimer.stop();
+                gameThread.interrupt();
+                System.exit(0);
+            }
+        });
     }
 }

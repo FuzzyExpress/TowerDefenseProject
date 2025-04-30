@@ -61,8 +61,7 @@ public class GamePanel extends JPanel {
                 int py = GameSettings.tileToScreenCentered(tileY);
 
                 // Don't allow turret on path tiles
-                Tiles tile = TileMapper.GetTile(rawMap[tileX][tileY]);
-                if (tile.isPath()) {
+                if (! TileMapper.GetTile(rawMap[tileX][tileY]).isPlaceable()) {
                     // System.out.println("Cannot place turret on path!");
                     return;
                 }
